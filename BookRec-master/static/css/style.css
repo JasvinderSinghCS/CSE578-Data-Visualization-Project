@@ -1,5 +1,67 @@
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
+.portfolio-item {
+  margin-bottom: 30px;
+}
+
+.pagination {
+  margin-bottom: 30px;
+}
+
+text.month-name,
+text.calendar-heatmap-legend-text,
+text.day-initial {
+  font-size: 10px;
+  fill: inherit;
+  font-family: Helvetica, arial, 'Open Sans', sans-serif;
+}
+rect.day-cell:hover {
+  stroke: #555555;
+  stroke-width: 1px;
+}
+.day-cell-tooltip {
+  position: absolute;
+  z-index: 999999;
+  padding: 5px 9px;
+  color: #bbbbbb;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 3px;
+  text-align: center;
+}
+.day-cell-tooltip > span {
+  font-family: Helvetica, arial, 'Open Sans', sans-serif
+}
+.calendar-heatmap {
+  box-sizing: initial;
+  overflow: visible;
+}
+.bar {
+  fill: #79a8a9;
+}
+.axis {
+  font-size: 13px;
+}        
+.axis path,
+.axis line {
+  fill: none;
+  display: none;
+}
+        
+.label {
+  font-size: 13px;
+}
 
 body {
+  padding: 0;
+}
+
+.container {
+  padding-top: 5px;
 }
 
 .bag1 img {
@@ -121,10 +183,12 @@ footer p {
   height: 200px;
 }
 
-.show {
-  display: block;
+.panel-heading i {
+  cursor: pointer;
 }
 
-.hide {
-  display: none;
+.small-graph {
+  width: 100%;
+  height: 250px;
+  border: 1px solid #aaa;
 }
