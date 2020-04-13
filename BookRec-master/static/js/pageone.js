@@ -85,6 +85,7 @@ var asin = []
 	// 	variableWidth: true
 	//   });
 
+	$('#rowwrapper').after('<a style ="color: #ffffff; margin-top: 20px;" id="btnRec" href="#vis" class="button button-3d button-primary button-rounded" data-toggle="modal" data-target=".bd-example-modal-lg">Show my recommendations!</a>')
 
 
     $('#btnRec').click(function(){
