@@ -5,13 +5,13 @@
     // var coverImage= ["https://images.gr-assets.com/books/1424037542l/7613.jpg","https://images.gr-assets.com/books/1474169725l/15881.jpg","https://images.gr-assets.com/books/1361039440l/49041.jpg","https://images.gr-assets.com/books/1523061131l/5129.jpg","https://images.gr-assets.com/books/1320399351l/1885.jpg","https://images.gr-assets.com/books/1372847500l/5907.jpg","https://images.gr-assets.com/books/1447303603l/2767052.jpg","https://images.gr-assets.com/books/1176671419l/643301.jpg"]
 
     var images = {'Insurgent':"https://images.gr-assets.com/books/1325667729l/11735983.jpg"
-    ,"The Help":"https://images.gr-assets.com/books/1346100365l/4667024.jpg"
-    ,"The Girl With The Dragon Tattoo":"https://images.gr-assets.com/books/1327868566l/2429135.jpg"
-    ,"The Girl Who Played With Fire":"https://images.gr-assets.com/books/1351778881l/5060378.jpg"
-,"Game Of Thrones":"https://images.gr-assets.com/books/1436732693l/13496.jpg"
-,"The kite runner":"https://images.gr-assets.com/books/1484565687l/77203.jpg"}
+    	,"The Help":"https://images.gr-assets.com/books/1346100365l/4667024.jpg"
+    	,"The Girl With The Dragon Tattoo":"https://images.gr-assets.com/books/1327868566l/2429135.jpg"
+    	,"The Girl Who Played With Fire":"https://images.gr-assets.com/books/1351778881l/5060378.jpg"
+		,"Game Of Thrones":"https://images.gr-assets.com/books/1436732693l/13496.jpg"
+		,"The kite runner":"https://images.gr-assets.com/books/1484565687l/77203.jpg"}
 
-var asin = []
+	var asin = []
     $.ajax({
         type: "GET",
         dataType: "json",
@@ -47,7 +47,7 @@ var asin = []
 				
 				var card_html = '<div class="col-lg-2 col-md-6 col-sm-6 portfolio-item">\
 				<div class="card h-70">\
-						<img class="cover"    height="100%" width ="100%" src="'+cover+'" >\
+						<img class="cover" height="100%" width ="100%" src="'+cover+'" >\
 						<div class="card-body" style="padding: 0.8rem;">\
 							<h6 class="card-title">\
 								<p>'+element.Title+'</p>\
@@ -78,6 +78,15 @@ var asin = []
 
 	$('#rowwrapper').after('<a style ="color: #ffffff; margin-top: 20px;" id="btnRec" href="#vis" class="button button-3d button-primary button-rounded">Show my recommendations!</a>')
 
+	$('.panel-heading i').click(function(){
+		var panel_body = $(this).parent().next('.panel-body');
+		panel_body.slideToggle().toggleClass('hide1');
+		
+		if(panel_body.hasClass('hide1'))
+			$(this).removeClass('fa-chevron-up').addClass('fa-chevron-down');
+		else
+			$(this).removeClass('fa-chevron-down').addClass('fa-chevron-up');
+	});
 
     $('#btnRec').click(function(){
         var req_array = []
