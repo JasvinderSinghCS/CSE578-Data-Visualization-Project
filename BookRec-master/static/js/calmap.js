@@ -1,11 +1,11 @@
 
 function calendarHeatmap() {
   // defaults
-  var width = 750;
-  var height = 120;
+  var width = $("#heatmap").width();
+  var height = 220;
   var legendWidth = 150;
   var selector = '#heatmap';
-  var SQUARE_LENGTH = 11;
+  var SQUARE_LENGTH = 17;
   var SQUARE_PADDING = 2;
   var MONTH_LABEL_PADDING = 6;
   var now = moment().endOf('day').toDate();
@@ -116,7 +116,7 @@ function calendarHeatmap() {
         .attr('width', width)
         .attr('class', 'calendar-heatmap')
         .attr('height', height)
-        .style('padding', '70px');
+        .style('padding', '50px 0');
 
       dayRects = svg.selectAll('.day-cell')
         .data(dateRange);  //  array of days for the last yr
@@ -129,10 +129,10 @@ function calendarHeatmap() {
         .attr('x', function (d, i) {
           var cellDate = moment(d);
           var result = cellDate.week() - firstDate.week() + (firstDate.weeksInYear() * (cellDate.weekYear() - firstDate.weekYear()));
-          return result * (SQUARE_LENGTH + SQUARE_PADDING);
+          return 20 + result * (SQUARE_LENGTH + SQUARE_PADDING);
         })
         .attr('y', function (d, i) {
-          return MONTH_LABEL_PADDING + formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING);
+          return 20 + MONTH_LABEL_PADDING + formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING);
         });
 
       if (typeof onClick === 'function') {
@@ -150,7 +150,7 @@ function calendarHeatmap() {
             .html(tooltipHTMLForDate(d))
             .style('left', function () { return Math.floor(i / 7) * SQUARE_LENGTH + 'px'; })
             .style('top', function () {
-              return formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING) + MONTH_LABEL_PADDING * 2 + 'px';
+              return 60 + formatWeekday(d.getDay()) * (SQUARE_LENGTH + SQUARE_PADDING) + MONTH_LABEL_PADDING * 2 + 'px';
             });
         })
         .on('mouseout', function (d, i) {
@@ -173,19 +173,21 @@ function calendarHeatmap() {
             .attr('width', SQUARE_LENGTH)
             .attr('height', SQUARE_LENGTH)
             .attr('x', function (d, i) { return (width - legendWidth) + (i + 1) * 13; })
-            .attr('y', height + SQUARE_PADDING)
+            .attr('y', height - 20)
             .attr('fill', function (d) { return d; });
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
           .attr('x', width - legendWidth - 13)
-          .attr('y', height + SQUARE_LENGTH)
+          .attr('y', height + SQUARE_LENGTH - 24)
+          .style('font-size', '13px')
           .text(locale.Less);
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-more')
-          .attr('x', (width - legendWidth + SQUARE_PADDING) + (colorRange.length + 1) * 13)
-          .attr('y', height + SQUARE_LENGTH)
+          .attr('x', (5 + width - legendWidth + SQUARE_PADDING) + (colorRange.length + 1) * 13)
+          .attr('y', height + SQUARE_LENGTH - 24)
+          .style('font-size', '13px')
           .text(locale.More);
       }
 
@@ -194,7 +196,7 @@ function calendarHeatmap() {
           .data(monthRange)
           .enter().append('text')
           .attr('class', 'month-name')
-          .style()
+          .style('font-size', '13px')
           .text(function (d) {
             return locale.months[d.getMonth()];
           })
@@ -205,17 +207,18 @@ function calendarHeatmap() {
               return moment(d).isSame(element, 'month') && moment(d).isSame(element, 'year');
             });
 
-            return Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
+            return 20 + Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
           })
-          .attr('y', 0);  // fix these to the top
+          .attr('y', 20);  // fix these to the top
 
       locale.days.forEach(function (day, index) {
         index = formatWeekday(index);
         if (index % 2) {
           svg.append('text')
             .attr('class', 'day-initial')
-            .attr('transform', 'translate(-8,' + (SQUARE_LENGTH + SQUARE_PADDING) * (index + 1) + ')')
+            .attr('transform', 'translate(8,' + (SQUARE_LENGTH + SQUARE_PADDING) * (index + 1) + ')')
             .style('text-anchor', 'middle')
+            .style('font-size', '13px')
             .attr('dy', '2')
             .text(day);
         }
