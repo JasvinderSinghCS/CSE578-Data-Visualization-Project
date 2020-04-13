@@ -2,6 +2,11 @@
 body {
 }
 
+.bag1 img {
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+
 a, a:visited {
   color:#333;
 }

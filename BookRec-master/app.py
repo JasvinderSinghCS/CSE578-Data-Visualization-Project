@@ -104,7 +104,7 @@ def get_rec(input_data,ratings_df):
     user_books = ratings_df.pivot(index="reviewerID",columns="asin",values="overall")
     user_books.fillna( 0, inplace = True )
     users = user_books.index.values
-    user_sim = 1 - pairwise_distances( user_books.as_matrix(), metric="cosine" )
+    user_sim = 1 - pairwise_distances( user_books.values, metric="cosine" )
     np.fill_diagonal( user_sim, 0 )
     user_sim_df = pd.DataFrame(user_sim)
     i =np.where(users == "REV001")[0][0]

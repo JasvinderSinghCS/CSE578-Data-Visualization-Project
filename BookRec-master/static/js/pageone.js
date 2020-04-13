@@ -73,10 +73,18 @@ var asin = []
 
             });
         }
+		
+	});
+	
+	// $('#rowwrapper').slick({
+	// 	dots: true,
+	// 	infinite: true,
+	// 	speed: 300,
+	// 	slidesToShow: 1,
+	// 	centerMode: true,
+	// 	variableWidth: true
+	//   });
 
-    });
-
-	$('#rowwrapper').after('<a style ="color: #ffffff; margin-top: 20px;" id="btnRec" href="#vis" class="button button-3d button-primary button-rounded">Show my recommendations!</a>')
 
 
     $('#btnRec').click(function(){
@@ -319,7 +327,6 @@ var asin = []
 
 
 		$('#vis').html('')
-		$('#vis').append('<h3>Here are our recommendations for you!</h4>')
 			
 		var svg = d3.select("#vis").append("svg")
 			.attr("width", width)
