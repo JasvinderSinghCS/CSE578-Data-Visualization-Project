@@ -88,6 +88,56 @@ def get_heatdata(isbn):
     # print(results[isbn])
     # return json.dumps(results[isbn])
 
+@app.route('/api/stat/ratingperuser',methods=['GET'])
+def get_ratingperuser():
+    # ratingperuser = ratings_df.groupby(['reviewerID']).size().to_frame('Reviews Count')
+    user_group = ratings_df.groupby('reviewerID')
+    ratingperuser = user_group['reviewerID'].count()
+    # print(ratingperuser)
+    return ratingperuser.to_json()
+    # df = stats_df[['asin','Date']]
+    # heat_df = df.groupby(['asin','Date'],as_index=False).size().to_frame('Count')
+    # results = defaultdict(lambda: defaultdict(dict))
+    # for index, value in heat_df.itertuples():
+    #     for i, key in enumerate(index):
+    #         if i == 0:
+    #             nested = results[key]
+    #         elif i == len(index) - 1:
+    #             nested[key] = value
+    #         else:
+    #             nested = nested[key]
+    # if isbn in results:
+    #     arr = []
+    #     for key,value in results[isbn].items():
+    #         dic = {"date":key,"count":value}
+    #         arr.append(dic)
+    #     return json.dumps(arr)
+    # else:
+    #     abort(400)
+
+@app.route('/api/stat/ratingperbook',methods=['GET'])
+def get_ratingperbook():
+    # ratingperuser = ratings_df.groupby(['reviewerID']).size().to_frame('Reviews Count')
+    book_group = stats_df.groupby('asin')
+    ratingperbook = book_group['asin'].count()
+    # print(ratingperuser)
+    return ratingperbook.to_json()
+
+@app.route('/api/stat/meanratingperuser',methods=['GET'])
+def get_meanratinguser():
+    user_group = ratings_df.groupby('reviewerID')
+    meanratingperuser = user_group['overall'].agg(np.mean)
+    # print(ratingperuser)
+    return meanratingperuser.to_json()
+
+@app.route('/api/stat/meanratingperbook',methods=['GET'])
+def get_meanratingperbook():
+    # ratingperuser = ratings_df.groupby(['reviewerID']).size().to_frame('Reviews Count')
+    book_group = stats_df.groupby('asin')
+    meanratingperbook = book_group['overall'].agg(np.mean)
+    # print(ratingperuser)
+    return meanratingperbook.to_json()
+
 def get_user_similar_books( user1, user2,users,books_df):
   common_books = ratings_df[ratings_df.reviewerID == users[user1]].merge(
       ratings_df[ratings_df.reviewerID == users[user2]],
