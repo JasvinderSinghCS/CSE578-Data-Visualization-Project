@@ -75,17 +75,8 @@
         }
 		
 	});
-	
-	// $('#rowwrapper').slick({
-	// 	dots: true,
-	// 	infinite: true,
-	// 	speed: 300,
-	// 	slidesToShow: 1,
-	// 	centerMode: true,
-	// 	variableWidth: true
-	//   });
 
-	$('#rowwrapper').after('<a style ="color: #ffffff; margin-top: 20px;" id="btnRec" href="#vis" class="button button-3d button-primary button-rounded" data-toggle="modal" data-target=".bd-example-modal-lg">Show my recommendations!</a>')
+	$('#rowwrapper').after('<div class="recommend hide"><a id="btnRec" href="#vis" class="button button-3d button-primary button-rounded" data-toggle="modal" data-target=".bd-example-modal-lg">Show my recommendations!</a></div>')
 
 	$('.panel-heading i').click(function(){
 		var panel_body = $(this).parent().next('.panel-body');
@@ -96,6 +87,24 @@
 		else
 			$(this).removeClass('fa-chevron-down').addClass('fa-chevron-up');
 	});
+
+	// Show/hide recommendation button
+	// For initial load. If the page is reloaded and is already scrolled to the books section, then show the button
+	showRecommendBtn();
+	// Check the scroll offset to show/hide the recommend button
+	$(window).scroll(function(){
+		showRecommendBtn();
+	});
+
+	function showRecommendBtn(){
+		setTimeout(function(){
+			if($(window).scrollTop() >= 320 && $('.recommend').hasClass('hide') == true) {
+				$('.recommend').toggleClass('hide');
+			} else if ($(window).scrollTop() < 320 && $('.recommend').hasClass('hide') == false) {
+				$('.recommend').addClass('hide');
+			}
+		}, 100);
+	}
 
     $('#btnRec').click(function(){
         var req_array = []

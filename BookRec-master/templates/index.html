@@ -6,68 +6,104 @@
 	<meta name="description" content="">
 	<meta name="author" content="">
 
-	<title>Your next book!</title>
+	<title>Book Recommendation System</title>
 
 	<!-- Bootstrap core CSS -->
 	<link href="static/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 	<link href="static/css/4-col-portfolio.css" rel="stylesheet">
 	<link href="static/css/buttons.css" rel="stylesheet">
 	<link rel="stylesheet" href="static/css/style.css">
 	<link rel="stylesheet" href="static/css/slide.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<script src="static/vendor/jquery/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 	<script>
-
-	function addImage(pk) {
-		alert("addImage: " + pk);
-	}
-	
-	$('#myModal .save').click(function (e) {
-		e.preventDefault();
-		addImage(5);
-		$('#myModal').modal('hide');
-		//$(this).tab('show')
-		return false;
-	})
+		function addImage(pk) {
+			alert("addImage: " + pk);
+		}
+		
+		$('#myModal .save').click(function (e) {
+			e.preventDefault();
+			addImage(5);
+			$('#myModal').modal('hide');
+			//$(this).tab('show')
+			return false;
+		})
 	</script>
 </head>
 <body>
-	<!-- Navigation -->
-	
-	<h3 style="color: sienna; padding: 5px;"><b>BOOKSTORE<b></h3>
-		<!-- The social media icon bar -->
-		<img src="static/wall.jpg" width="100%" height="300px">
-		
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<header>
 		<div class="container">
-			<a class="navbar-brand" href="#">What should I read next?</a>
+			<h1>Book Recommendation System</h1>
+			<h4>What you should read next?</h4>
 		</div>
-	</nav>
-  
+	</header>
 	
-	<div class="jumbotron jumbotron-fluid">
-	<!-- Page Content -->
-	<div class="container">
-		<!-- Page Heading -->
-		<div class="bag1">
-			
-			<div class="icon-bar">
-				<a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-				<a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-				<a href="#" class="google"><i class="fa fa-google"></i></a>
-				<a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
-				<a href="#" class="youtube"><i class="fa fa-youtube"></i></a>
-			  </div>
-		</div>	
-		
-		<div class="row pre-scrollable" style="max-height: 65vh"s id="rowwrapper"></div>
+	<!-- <div class="jumbotron jumbotron-fluid"> -->
+		<!-- Page Content -->
+		<div class="container">
+			<div class="row" id="stats">
+				<div class="col-md-3">
+					<div class="well well-sm">
+						<div class="panel-heading">Stat1</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="well well-sm">
+						<div class="panel-heading">Stat2</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="well well-sm">
+						<div class="panel-heading">Stat3</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="well well-sm">
+						<div class="panel-heading">Stat4</div>
+					</div>
+				</div>
+			</div>
 
-	</div>
-	
-	</div>
+			<div class="panel panel-default" id="overview">
+				<div class="panel-heading"><i class="fa fa-bar-chart" aria-hidden="true"></i> Data Overview <i class="fa fa-chevron-up float-right"></i></div>
+				<div class="panel-body">
+					<div class="col-md-4">
+						<div class="small-graph">1</div>
+					</div>
+					<div class="col-md-4">
+						<div class="small-graph">2</div>
+					</div>
+					<div class="col-md-4">
+						<div class="small-graph">3</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- <div class="bag1">
+				
+				<div class="icon-bar">
+					<a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+					<a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+					<a href="#" class="google"><i class="fa fa-google"></i></a>
+					<a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+					<a href="#" class="youtube"><i class="fa fa-youtube"></i></a>
+				</div>
+			</div>	 -->
+			<br>
+			<h3><i class="fa fa-star-half-o" aria-hidden="true"></i> Rate as many books as you can!</h3>
+			<hr>
+			<!-- <div class="row pre-scrollable" style="max-height: 65vh"s id="rowwrapper"></div> -->
+			<div class="row" id="rowwrapper"></div>
+		</div>
+	<!-- </div> -->
+
 	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myModal">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-xl" role="document">
 		  <div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLongTitle"><b>Here are our recommendations for you!</b></h5>
@@ -89,7 +125,7 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="uploadTab">
-							<div id="vis" height = "1000"></div>
+							<div id="vis" height = "800"></div>
 							<div class="jumbotron jumbotron-fluid" style="padding: 50px;">
 					
 								<h5><i>double click on the circle</i></h5><br> 
@@ -114,13 +150,12 @@
 			  </div>
 		  </div>
 		</div>
-	  </div>
+	</div>
 
 	
 	<!-- Bootstrap core JavaScript -->	
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-	<script src="static/vendor/jquery/jquery.min.js"></script>
-	<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 	<script type="text/javascript" src="static/js/calmap.js"></script>
 	<script type="text/javascript" src="static/js/pageone.js"></script>
