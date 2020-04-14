@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,11 +22,15 @@
 	<script src="static/vendor/jquery/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script>
 		function addImage(pk) {
 			alert("addImage: " + pk);
 		}
-		
+
 		$('#myModal .save').click(function (e) {
 			e.preventDefault();
 			addImage(5);
@@ -35,6 +40,7 @@
 		})
 	</script>
 </head>
+
 <body>
 	<header>
 		<div class="container">
@@ -42,49 +48,50 @@
 			<h4>What you should read next?</h4>
 		</div>
 	</header>
-	
+
 	<!-- <div class="jumbotron jumbotron-fluid"> -->
-		<!-- Page Content -->
-		<div class="container">
-			<div class="row" id="stats">
-				<div class="col-md-3">
-					<div class="well well-sm">
-						<div class="panel-heading">Stat1</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="well well-sm">
-						<div class="panel-heading">Stat2</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="well well-sm">
-						<div class="panel-heading">Stat3</div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="well well-sm">
-						<div class="panel-heading">Stat4</div>
-					</div>
+	<!-- Page Content -->
+	<div class="container">
+		<div class="row" id="stats">
+			<div class="col-md-3">
+				<div class="well well-sm">
+					<div class="panel-heading">Stat1</div>
 				</div>
 			</div>
-
-			<div class="panel panel-default" id="overview">
-				<div class="panel-heading"><i class="fa fa-bar-chart" aria-hidden="true"></i> Data Overview <i class="fa fa-chevron-up float-right"></i></div>
-				<div class="panel-body">
-					<div class="col-md-4">
-						<div class="small-graph">1</div>
-					</div>
-					<div class="col-md-4">
-						<div class="small-graph">2</div>
-					</div>
-					<div class="col-md-4">
-						<div class="small-graph">3</div>
-					</div>
+			<div class="col-md-3">
+				<div class="well well-sm">
+					<div class="panel-heading">Stat2</div>
 				</div>
 			</div>
+			<div class="col-md-3">
+				<div class="well well-sm">
+					<div class="panel-heading">Stat3</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="well well-sm">
+					<div class="panel-heading">Stat4</div>
+				</div>
+			</div>
+		</div>
 
-			<!-- <div class="bag1">
+		<div class="panel panel-default" id="overview">
+			<div class="panel-heading"><i class="fa fa-bar-chart" aria-hidden="true"></i> Data Overview <i
+					class="fa fa-chevron-up float-right"></i></div>
+			<div class="panel-body">
+				<div class="col-md-4">
+					<div class="small-graph">1</div>
+				</div>
+				<div class="col-md-4">
+					<div class="small-graph">2</div>
+				</div>
+				<div class="col-md-4">
+					<div class="small-graph">3</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="bag1">
 				
 				<div class="icon-bar">
 					<a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
@@ -94,70 +101,83 @@
 					<a href="#" class="youtube"><i class="fa fa-youtube"></i></a>
 				</div>
 			</div>	 -->
-			<br>
-			<h3><i class="fa fa-star-half-o" aria-hidden="true"></i> Rate as many books as you can!</h3>
-			<hr>
-			<!-- <div class="row pre-scrollable" style="max-height: 65vh"s id="rowwrapper"></div> -->
-			<div class="row" id="rowwrapper"></div>
-		</div>
+		<br>
+		<h3><i class="fa fa-star-half-o" aria-hidden="true"></i> Rate as many books as you can!</h3>
+		<hr>
+		<!-- <div class="row pre-scrollable" style="max-height: 65vh"s id="rowwrapper"></div> -->
+		<div class="row" id="rowwrapper"></div>
+	</div>
 	<!-- </div> -->
 
-	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myModal">
+	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+		aria-hidden="true" id="myModal">
 		<div class="modal-dialog modal-xl" role="document">
-		  <div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle"><b>Here are our recommendations for you!</b></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">&times;</span>
-				</button>
-			  </div>
-			  <div class="modal-body">
-				<div role="tabpanel">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab" role="tab" data-toggle="tab">Upload</a>
-
-                        </li>
-                        <li role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab" data-toggle="tab">Browse</a>
-
-						</li>
-                    </ul>
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="uploadTab">
-							<div id="vis" height = "800"></div>
-							<div class="jumbotron jumbotron-fluid" style="padding: 50px;">
-					
-								<h5><i>double click on the circle</i></h5><br> 
-							<div id = "textDesc"></div>
-							<div id="heatmap"><div class="progress">
-								<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
-							  </div></div>
-						
-							
-						</div>
-						<div id="ratingBar"></div>
-						</div>
-						<div role="tabpanel" class="tab-pane" id="browseTab">browseTab</div>
-                    </div>
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle"><b>Here are our recommendations for you!</b></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
-				
-			</div>
+				<div class="modal-body">
+					<div role="tabpanel">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active"><a href="#uploadTab" aria-controls="uploadTab"
+									role="tab" data-toggle="tab">Upload</a>
 
-			<div class="modal-footer">
-				
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			  </div>
-		  </div>
+							</li>
+							<li role="presentation"><a href="#browseTab" aria-controls="browseTab" role="tab"
+									data-toggle="tab">Browse</a>
+
+							</li>
+						</ul>
+						<!-- Tab panes -->
+						<div class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="uploadTab">
+								<div id="vis" height="800"></div>
+								<div class="jumbotron jumbotron-fluid" style="padding: 50px;">
+
+									<h5><i>double click on the circle</i></h5><br>
+									<div id="textDesc"></div>
+									<div id="heatmap">
+										<div class="progress">
+											<div class="progress-bar progress-bar-striped progress-bar-animated"
+												role="progressbar" aria-valuenow="75" aria-valuemin="0"
+												aria-valuemax="100" style="width: 75%"></div>
+										</div>
+									</div>
+
+
+								</div>
+								<div id="ratingBar"></div>
+
+								<figure class="highcharts-figure">
+									<div id="containerbar"></div>
+								</figure>
+
+							</div>
+							<div role="tabpanel" class="tab-pane" id="browseTab">browseTab</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
 		</div>
 	</div>
 
-	
-	<!-- Bootstrap core JavaScript -->	
+
+	<!-- Bootstrap core JavaScript -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 	<!-- <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 	<script type="text/javascript" src="static/js/calmap.js"></script>
 	<script type="text/javascript" src="static/js/pageone.js"></script>
 </body>
+
 </html>
