@@ -36,7 +36,7 @@ def book_rec():
     print(request.data)
     if not request.data:
         abort(400)
-    res = get_rec(request.data,ratings_df)
+    res = get_rec(request.data, ratings_df)
     return res
 
 @app.route('/api/ratings/<string:isbn>',methods=['GET'])
@@ -90,52 +90,26 @@ def get_heatdata(isbn):
 
 @app.route('/api/stat/ratingperuser',methods=['GET'])
 def get_ratingperuser():
-    # ratingperuser = ratings_df.groupby(['reviewerID']).size().to_frame('Reviews Count')
     user_group = ratings_df.groupby('reviewerID')
     ratingperuser = user_group['reviewerID'].count()
-    # print(ratingperuser)
     return ratingperuser.to_json()
-    # df = stats_df[['asin','Date']]
-    # heat_df = df.groupby(['asin','Date'],as_index=False).size().to_frame('Count')
-    # results = defaultdict(lambda: defaultdict(dict))
-    # for index, value in heat_df.itertuples():
-    #     for i, key in enumerate(index):
-    #         if i == 0:
-    #             nested = results[key]
-    #         elif i == len(index) - 1:
-    #             nested[key] = value
-    #         else:
-    #             nested = nested[key]
-    # if isbn in results:
-    #     arr = []
-    #     for key,value in results[isbn].items():
-    #         dic = {"date":key,"count":value}
-    #         arr.append(dic)
-    #     return json.dumps(arr)
-    # else:
-    #     abort(400)
 
 @app.route('/api/stat/ratingperbook',methods=['GET'])
 def get_ratingperbook():
-    # ratingperuser = ratings_df.groupby(['reviewerID']).size().to_frame('Reviews Count')
     book_group = stats_df.groupby('asin')
     ratingperbook = book_group['asin'].count()
-    # print(ratingperuser)
     return ratingperbook.to_json()
 
 @app.route('/api/stat/meanratingperuser',methods=['GET'])
 def get_meanratinguser():
     user_group = ratings_df.groupby('reviewerID')
     meanratingperuser = user_group['overall'].agg(np.mean)
-    # print(ratingperuser)
     return meanratingperuser.to_json()
 
 @app.route('/api/stat/meanratingperbook',methods=['GET'])
 def get_meanratingperbook():
-    # ratingperuser = ratings_df.groupby(['reviewerID']).size().to_frame('Reviews Count')
     book_group = stats_df.groupby('asin')
     meanratingperbook = book_group['overall'].agg(np.mean)
-    # print(ratingperuser)
     return meanratingperbook.to_json()
 
 def get_user_similar_books( user1, user2,users,books_df):
@@ -146,7 +120,7 @@ def get_user_similar_books( user1, user2,users,books_df):
 
   return common_books.merge(books_df, on = 'asin' )
 
-def get_rec(input_data,ratings_df):
+def get_rec(input_data, ratings_df):
     json_data = json.loads(input_data)
     user_input = pd.DataFrame(json_data)
     ratings_df = ratings_df.append(user_input)
@@ -159,11 +133,19 @@ def get_rec(input_data,ratings_df):
     user_sim_df = pd.DataFrame(user_sim)
     i =np.where(users == "REV001")[0][0]
     cor_user = user_sim_df.idxmax(axis=1)[i]
+    no_of_reco_needed = 10
     reco = get_user_similar_books(i,cor_user,users,books_df)
-    reco = reco[(reco['reviewerID_x'].isnull() ) & (reco['overall_y'] >=4)].sort_values(by='overall_y',ascending=False).head(10)
-    reco = reco[['asin','Title','Author']]
-    return reco.to_json(orient='records')
-
+    reco_likes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] >=4)].sort_values(by='overall_y',ascending=False).head(no_of_reco_needed)
+    reco_likes = reco_likes[['asin','Title','Author']]
+    reco_dislikes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] > 0)].sort_values(by='overall_y',ascending=True).head(no_of_reco_needed)
+    reco_dislikes = reco_dislikes[['asin', 'Title', 'Author']]
+    reco = reco_likes.append(reco_dislikes)
+    likes_cluster = np.ones(no_of_reco_needed, dtype=int)
+    dislikes_cluster = np.full(no_of_reco_needed, 2, dtype=int)
+    clusters = np.append(likes_cluster,dislikes_cluster)
+    reco_clusters = reco.assign(cluster = clusters)
+    print(reco_clusters)
+    return reco_likes.to_json(orient='records')
 
 if __name__ == '__main__':
     ratings_df = pd.read_csv("./ratings_data.csv",index_col=False)
