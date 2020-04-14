@@ -49,12 +49,12 @@
 
 				var card_html = '<div class="col-lg-2 col-md-6 col-sm-6 portfolio-item">\
 				<div class="card h-70">\
-						<img class="cover" height="100%" width ="100%" src="'+ cover + '" >\
+						<img class="cover" height="210px" width ="auto" src="'+ cover + '" >\
 						<div class="card-body" style="padding: 0.8rem;">\
-							<h6 class="card-title">\
-								<p>'+ element.Title + '</p>\
-							</h6>\
-							<p class="card-text">'+ element.Author + '</p>\
+							<h5 class="card-title">\
+								'+ element.Title + '\
+							</h5>\
+							<p class="card-text">- <em>'+ element.Author + '</em></p>\
 							<div id="rating'+ element.asin + '"></div>\
 						</div>\
 					</div>\
@@ -80,6 +80,7 @@
 
 	$('#rowwrapper').after('<div class="recommend hide"><a id="btnRec" href="#vis" class="button button-3d button-primary button-rounded" data-toggle="modal" data-target=".bd-example-modal-lg">Show my recommendations!</a></div>')
 
+	// Panel slide up and down toggle script
 	$('.panel-heading i').click(function () {
 		var panel_body = $(this).parent().next('.panel-body');
 		panel_body.slideToggle().toggleClass('hide1');
@@ -100,13 +101,41 @@
 
 	function showRecommendBtn() {
 		setTimeout(function () {
-			if ($(window).scrollTop() >= 320 && $('.recommend').hasClass('hide') == true) {
+			var row_wrapper_offset = $('#rowwrapper').offset().top - ($(window).height() / 2);
+			if ($(window).scrollTop() >= row_wrapper_offset && $('.recommend').hasClass('hide') == true) {
 				$('.recommend').toggleClass('hide');
-			} else if ($(window).scrollTop() < 320 && $('.recommend').hasClass('hide') == false) {
+			} else if ($(window).scrollTop() < row_wrapper_offset && $('.recommend').hasClass('hide') == false) {
 				$('.recommend').addClass('hide');
 			}
 		}, 100);
 	}
+
+	// Books list search
+	$('#book_search').keyup(function(){
+		var input_val = $(this).val().trim().toLowerCase();
+		if(input_val) {
+			$('#rowwrapper .portfolio-item').hide();
+			$('#no_results').remove();
+			
+			$('#rowwrapper .card').each(function(){
+				var card_title = $(this).find(".card-title").text().trim().toLowerCase();
+				var card_text = $(this).find(".card-text").text().trim().toLowerCase();
+	
+				if(card_title.search(input_val) != -1 || card_text.search(input_val) != -1) {
+					$(this).parent().show();
+					setTimeout(function(){
+						$('#no_results').remove();
+					}, 10);
+				} else {
+					if(!$('#no_results').length)
+						$('#rowwrapper').append('<div id="no_results" class="bg-warning"><i class="fa fa-warning"></i> Please revise your search!</div>')
+				}
+			});
+		} else {
+			$('#rowwrapper .portfolio-item').show();
+		}
+	});
+
 
 	$('#btnRec').click(function () {
 		var req_array = []

@@ -184,6 +184,9 @@ footer p {
   font: 13px sans-serif;
 }
 
+.card {
+  height: 100%;
+}
 .card:hover {
   box-shadow: 0px 0px 4px rgb(30, 148, 238);
 }
@@ -226,4 +229,39 @@ footer p {
 
 #rowwrapper {
   margin-bottom: 100px;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+::-webkit-input-placeholder { /* Edge */
+  color: #aaa;
+  font-size: 13px;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #aaa;
+  font-size: 13px;
+}
+
+::placeholder {
+  color: #aaa;
+  font-size: 13px;
+}
+
+input {
+  padding: 6px;
+  font-size: 14px;
+  width: 100%;
+}
+input:focus {
+  outline: 1px solid rgb(54, 133, 236);
+}
+
+#no_results {
+  font-size: 15px;
+  padding: 2%;
+  width: 90%;
+  margin: auto;
 }
