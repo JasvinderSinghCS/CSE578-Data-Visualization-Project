@@ -37,6 +37,18 @@ def book_rec():
     if not request.data:
         abort(400)
     res = get_rec(request.data, ratings_df)
+    rec_author_filtered = get_rec_author_filtered(request.data, ratings_df)
+    print(res)
+    print(rec_author_filtered)
+    return res
+
+@app.route('/api/getvenn',methods=['POST'])
+@cross_origin(support_credentials=True)
+def user_venn():
+    print(request.data)
+    if not request.data:
+        abort(400)
+    res = get_venn(request.data, ratings_df)
     return res
 
 @app.route('/api/ratings/<string:isbn>',methods=['GET'])
@@ -116,13 +128,75 @@ def get_user_similar_books( user1, user2,users,books_df):
   common_books = ratings_df[ratings_df.reviewerID == users[user1]].merge(
       ratings_df[ratings_df.reviewerID == users[user2]],
       on = "asin",
-      how = "right" )
-
+      how = "right")
   return common_books.merge(books_df, on = 'asin' )
+
+def get_similar_user_books( user1, user2,users,books_df):
+  common_books = ratings_df[ratings_df.reviewerID == users[user1]].merge(
+      ratings_df[ratings_df.reviewerID == users[user2]],
+      on = "asin",
+      how = "right")
+  print(common_books)
+  return common_books.merge(books_df, on = 'asin' )
+
+
+# def get_venn(input_data, ratings_df):
+#     json_data = json.loads(input_data)
+#     user_input = pd.DataFrame(json_data)
+#     user_rated_books = user_input.filter(lambda x : x.overall > 0)
+#     ratings_df = ratings_df.append(user_input)
+#     ratings_df.reset_index(drop=True,inplace=True)
+#     user_books = ratings_df.pivot(index="reviewerID",columns="asin",values="overall")
+#     user_books.fillna( 0, inplace = True )
+#     users = user_books.index.values
+#     user_sim = 1 - pairwise_distances( user_books.values, metric="cosine" )
+#     np.fill_diagonal( user_sim, 0 )
+#     user_sim_df = pd.DataFrame(user_sim)
+#     i =np.where(users == "REV001")[0][0]
+#     cor_user = user_sim_df.idxmax(axis=1)[i]
+#     no_of_reco_needed = 10
+#     reco = get_user_similar_books(i,cor_user,users,books_df)
+#     print(reco['Title'])
+#     print(user_rated_books.merge(books_df, on='asin'))
+
+def get_rec_author_filtered(input_data, ratings_df):
+    json_data = json.loads(input_data)
+    user_input = pd.DataFrame(json_data)
+    # user_rated_books = user_input.filter(lambda x: x.overall > 0)
+    user_rated_books = user_input[user_input.overall > 0]
+    user_rated_books_meta = user_rated_books.merge(books_df, on='asin')
+    ratings_df = ratings_df.append(user_input)
+    ratings_df.reset_index(drop=True, inplace=True)
+    user_books = ratings_df.pivot(index="reviewerID", columns="asin", values="overall")
+    user_books.fillna(0, inplace=True)
+    users = user_books.index.values
+    user_sim = 1 - pairwise_distances(user_books.values, metric="cosine")
+    np.fill_diagonal(user_sim, 0)
+    user_sim_df = pd.DataFrame(user_sim)
+    i = np.where(users == "REV001")[0][0]
+    cor_user = user_sim_df.idxmax(axis=1)[i]
+    no_of_reco_needed = 10
+    reco = get_user_similar_books(i, cor_user, users, books_df)
+    reco_likes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] >= 4)].sort_values(by='overall_y', ascending=False).head(no_of_reco_needed)
+    reco_likes = reco_likes[['asin', 'Title', 'Author']]
+    reco_dislikes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] > 0)].sort_values(by='overall_y',ascending=True).head(no_of_reco_needed)
+    reco_dislikes = reco_dislikes[['asin', 'Title', 'Author']]
+    reco = reco_likes.append(reco_dislikes)
+    likes_cluster = np.ones(no_of_reco_needed, dtype=int)
+    dislikes_cluster = np.full(no_of_reco_needed, 2, dtype=int)
+    clusters = np.append(likes_cluster, dislikes_cluster)
+    reco_clusters = reco.assign(cluster=clusters)
+    reco_author_filter = reco_clusters.loc[~reco['Author'].isin(user_rated_books_meta['Author'])]
+    return reco_author_filter.to_json(orient='records')
+
+
 
 def get_rec(input_data, ratings_df):
     json_data = json.loads(input_data)
     user_input = pd.DataFrame(json_data)
+    # user_rated_books = user_input.filter(lambda x: x.overall > 0)
+    # user_rated_books = user_input[user_input.overall > 0]
+    # user_rated_books_meta = user_rated_books.merge(books_df, on='asin')
     ratings_df = ratings_df.append(user_input)
     ratings_df.reset_index(drop=True,inplace=True)
     user_books = ratings_df.pivot(index="reviewerID",columns="asin",values="overall")
@@ -144,8 +218,7 @@ def get_rec(input_data, ratings_df):
     dislikes_cluster = np.full(no_of_reco_needed, 2, dtype=int)
     clusters = np.append(likes_cluster,dislikes_cluster)
     reco_clusters = reco.assign(cluster = clusters)
-    print(reco_clusters)
-    return reco_likes.to_json(orient='records')
+    return reco_clusters.to_json(orient='records')
 
 if __name__ == '__main__':
     ratings_df = pd.read_csv("./ratings_data.csv",index_col=False)
