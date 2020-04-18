@@ -17,7 +17,7 @@
 	$.ajax({
 		type: "GET",
 		dataType: "json",
-		url: "http://127.0.0.1:5000/api/getbooks",
+		url: "/api/getbooks",
 		success: function (result) {
 
 			$.each(result, function (index, element) {
@@ -152,7 +152,7 @@
 			contentType: 'application/json',
 			dataType: "json",
 			data: JSON.stringify(req_array),
-			url: "http://127.0.0.1:5000/api/getrec"
+			url: "/api/getrec"
 		}).done(function (data) {
 			//console.log(data);
 			// Scroll to the Bubble Chart
@@ -169,7 +169,7 @@
 			type: "GET",
 			contentType: 'application/json',
 			dataType: "json",
-			url: "http://127.0.0.1:5000/api/ratings/" + isbn
+			url: "/api/ratings/" + isbn
 		}).done(function (data) {
 			console.log(data);
 			show_ratingsbar(data, name);
@@ -181,7 +181,7 @@
 			type: "GET",
 			contentType: 'application/json',
 			dataType: "json",
-			url: "http://127.0.0.1:5000/api/heatmap/" + isbn
+			url: "/api/heatmap/" + isbn
 		}).done(function (data) {
 			//console.log(data);
 			show_heatmap(data, name);
