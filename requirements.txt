@@ -3,6 +3,5 @@ pandas
 numpy
 sklearn
 scipy
-json
 flask_cors
 collections
