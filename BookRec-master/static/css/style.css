@@ -88,7 +88,7 @@ a, a:visited {
 header {
   padding: 10px;
   /* background: url('/static/wall.jpg') no-repeat center; */
-  background: rgb(65, 51, 51);
+  background: #24292e;
   background-size: cover;
   color: #fff;
 }
@@ -96,7 +96,7 @@ header .container {
   padding-top: 0;
 }
 header h1 {
-  font-size: 30px;
+  font-size: 26px;
 }
 
 #book-title {
@@ -202,12 +202,12 @@ footer p {
 
 .small-graph {
   width: 100%;
-  border: 1px solid #aaa;
+  /* border: 1px solid #aaa; */
 }
 
 @media (min-width: 768px) {
   .modal-xl {
-    width: 90%;
+    width: 92%;
     max-width:1200px;
   }
 }
@@ -280,3 +280,40 @@ text.highcharts-credits {
 .highcharts-menu li:first-child {
   display: block;
 }
+
+#bookDetails h4 {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+  color: #333;
+}
+
+.book-name {
+  margin: 20px 0;
+}
+
+#bookDetails .book-title {
+  font-weight: bold;
+  color: #24292e;
+}
+
+.panel-heading {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.loading {
+  position: relative;
+  width: 100%;
+    height: 200px;
+    text-align: center;
+    background: rgba(234, 234, 234, 0.85);
+}
+.loading i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+/* .container {
+  max-width: 100%;
+  width: 90%;
+} */

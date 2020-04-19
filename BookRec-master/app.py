@@ -298,9 +298,15 @@ def get_rec(input_data, ratings_df):
     for i in y:
         temp_users.append(i.tolist())
 
+    max_sim_val = max(filter_curr_user)
+
     for i in range(0, len(temp_sim_rating) - 1):
         for j in range(0, len(temp_sim_rating[i]) - 1):
-            temp = {'x':i, 'y':j, 'value':round(temp_sim_rating[i][j], 2), 'user':temp_users[i][j]}
+            if temp_sim_rating[i][j] == max_sim_val:
+                maxVal = True
+            else:
+                maxVal = False
+            temp = {'x':i, 'y':j, 'value':round(temp_sim_rating[i][j], 2), 'user':temp_users[i][j], 'max': maxVal}
             result.append(temp)
 
     np.fill_diagonal( user_sim, 0 )

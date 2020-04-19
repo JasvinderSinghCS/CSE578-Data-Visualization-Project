@@ -160,6 +160,9 @@
 			// 	scrollTop: $("#vis").offset().top - 80
 			// }, 500);
 
+			// Move to the Book Details Tab
+			$('a[href="#recBooks"]').trigger('click');
+
 			user_similarity_plot(data['user_similarity']);
 
 			var modal_width = $('.tab-pane.active').width();
@@ -206,7 +209,7 @@
 		});
 
 		$('#heatmap').html('')
-		$('#heatmap').append('<h5>When do people read ' + name + '</h5>')
+		$('#heatmap').append('<h4>When do people read the book?</h4>')
 		var heatmap = calendarHeatmap()
 			.data(chartData)
 			.selector('#heatmap')
@@ -220,10 +223,11 @@
 
 	function plotBarUpdated(title, data) {
 		data = data.sort((a, b) => parseInt(b.value, 10) - parseInt(a.value, 10));
-		const color = ['#6E63A9', '#8D78C2', '#A98DD4', '#C1A2E1' , '#D7B8EB'];
+		const color = ['#196127', '#239a3b', '#7bc96f', '#c6e48b' , '#dbf1af'];
 		Highcharts.chart('containerbar', {
 			chart: {
-				type: 'bar'
+				type: 'column',
+				height: (4 / 5 * 100) + '%'
 			},
 			title: {
 				text: title
@@ -239,7 +243,7 @@
 			},
 			yAxis: {
 				min: 0,
-				opposite: true,
+				opposite: false,
 				title: {
 					text: 'No. of ratings',
 					align: 'middle'
@@ -272,7 +276,7 @@
 
 	function show_ratingsbar(data, bookName) {
 
-		plotBarUpdated('<h4>How people rated ' + bookName + '</h4>', data);
+		plotBarUpdated('<h4>How people rated the book?</h4>', data);
 		return;
 		$('#ratingBar').html('')
 		//sort bars based on value
@@ -469,14 +473,24 @@
 
 		node.selectAll("circle")
 			.on('dblclick', function (d, i) {
-				//console.log(d.name);    
+				//console.log(d.name);
+				
+				// Move to the Book Details Tab
+				$('a[href="#bookDetails"]').trigger('click');
+
+				// Remove Initial Text
+				$('#initial-text').remove();
+
+				// Add Book name
+				$('.book-name .book-title').empty().append(d.name);
+
 				add_title(d.name, d.division);
 				get_heatmap(d.asin, d.name);
 				get_ratings(d.asin, d.name);
 
-				$("html, body").animate({
-					scrollTop: $("#textDesc").offset().top - 80
-				}, 500);
+				// $("html, body").animate({
+				// 	scrollTop: $("#textDesc").offset().top - 80
+				// }, 500);
 			})
 			.transition()
 			.duration(1500)
@@ -554,7 +568,7 @@
 			return {
 				chart: {
 					type: 'heatmap',
-					marginTop: 40,
+					marginTop: 45,
 					marginBottom: 40,
 					zoomType: 'xy',
 					events: {
@@ -579,12 +593,13 @@
 				},
 				yAxis: {
 					categories: null,
-					title: null
+					title: null,
+					gridLineWidth: 0
 				},
 				colorAxis: {
-					min: 0.08,
-					minColor: '#FFFFFF',
-					maxColor: '#6E63A9',
+					min: 0.09,
+					minColor: '#dbf1af',
+					maxColor: '#196127',
 					// maxColor: Highcharts.getOptions().colors[0],
 				},
 				legend: {
@@ -615,7 +630,7 @@
 				}]
 			}
 		}
-		}
+	}
 
 		  
 

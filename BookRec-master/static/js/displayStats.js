@@ -1,5 +1,8 @@
 function plotChartsStats(data, id, title, xAxis, yAxis) {
     Highcharts.chart(id, {
+        chart: {
+            height: (7 / 8 * 100) + '%'
+        },
         title: {
             text: title
         },
@@ -19,18 +22,21 @@ function plotChartsStats(data, id, title, xAxis, yAxis) {
             title: false,
             max: yAxis.max,
             step: 20,
-            tickInterval: 50
+            tickInterval: 100
 
         }, {
             title: { text: 'Count' },
             max: yAxis.max,
-            tickInterval: 50,
+            tickInterval: id == 'ratingsperbook'? 200: 50,
             startOnTick: false,
             showLastLabel: true,
             opposite: false
         }],
 
         plotOptions: {
+            series: {
+                color: '#239a3b'
+            },
             histogram: {
                 accessibility: {
                     pointDescriptionFormatter: function (point) {
@@ -70,7 +76,7 @@ function init() {
         dataType: "json",
         url: "/api/stat/ratingperuser",
         success: function (result) {
-            console.log(result);
+            // console.log(result);
             const arr = Object.keys(result).map(e => result[e]);
             plotChartsStats(arr,
                 'ratingperuser',
@@ -81,7 +87,7 @@ function init() {
                 }, {
                 max: 650
             });
-            console.log(JSON.stringify(arr));
+            // console.log(JSON.stringify(arr));
         }
     });
 
@@ -101,7 +107,7 @@ function init() {
                 }, {
                 max: 150
             });
-            console.log(JSON.stringify(arr));
+            // console.log(JSON.stringify(arr));
         }
     });
 
@@ -121,7 +127,7 @@ function init() {
                 }, {
                 max: 1600
             });
-            console.log(JSON.stringify(arr));
+            // console.log(JSON.stringify(arr));
         }
     });
 
@@ -141,7 +147,7 @@ function init() {
                 }, {
                 max: 250
             });
-            console.log(JSON.stringify(arr));
+            // console.log(JSON.stringify(arr));
         }
     });
 }

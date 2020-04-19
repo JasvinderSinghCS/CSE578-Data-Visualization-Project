@@ -2,11 +2,11 @@
 function calendarHeatmap() {
   // defaults
   var width = $("#heatmap").width();
-  var height = 220;
+  var height = 200;
   var legendWidth = 150;
   var selector = '#heatmap';
-  var SQUARE_LENGTH = 17;
-  var SQUARE_PADDING = 2;
+  var SQUARE_LENGTH = 12.5;
+  var SQUARE_PADDING = 1;
   var MONTH_LABEL_PADDING = 6;
   var now = moment().endOf('day').toDate();
   var yearAgo = moment().startOf('day').subtract(1, 'year').toDate();
@@ -101,7 +101,8 @@ function calendarHeatmap() {
 
     // color range
     var color = d3.scale.linear()
-      .range(chart.colorRange())
+      // .range(['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'])
+      .range(['#dbf1af', '#196127'])
       .domain([0, max]);
 
     var tooltip;
@@ -116,7 +117,7 @@ function calendarHeatmap() {
         .attr('width', width)
         .attr('class', 'calendar-heatmap')
         .attr('height', height)
-        .style('padding', '50px 0');
+        .style('padding', '40px 0 20px 0');
 
       dayRects = svg.selectAll('.day-cell')
         .data(dateRange);  //  array of days for the last yr
@@ -178,16 +179,20 @@ function calendarHeatmap() {
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-less')
-          .attr('x', width - legendWidth - 13)
-          .attr('y', height + SQUARE_LENGTH - 24)
-          .style('font-size', '13px')
+          .attr('x', -5 + width - legendWidth - 13)
+          .attr('y', height + SQUARE_LENGTH - 22)
+          .style('font-size', '12px')
+          .style('color', '#666')
+          .style('font-family', '"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif')
           .text(locale.Less);
 
         legendGroup.append('text')
           .attr('class', 'calendar-heatmap-legend-text calendar-heatmap-legend-text-more')
           .attr('x', (5 + width - legendWidth + SQUARE_PADDING) + (colorRange.length + 1) * 13)
-          .attr('y', height + SQUARE_LENGTH - 24)
-          .style('font-size', '13px')
+          .attr('y', height + SQUARE_LENGTH - 22)
+          .style('font-size', '12px')
+          .style('color', '#666')
+          .style('font-family', '"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif')
           .text(locale.More);
       }
 
@@ -196,7 +201,9 @@ function calendarHeatmap() {
           .data(monthRange)
           .enter().append('text')
           .attr('class', 'month-name')
-          .style('font-size', '13px')
+          .style('font-size', '12px')
+          .style('font-family', '"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif')
+          .style('color', '#666')
           .text(function (d) {
             return locale.months[d.getMonth()];
           })
@@ -218,7 +225,9 @@ function calendarHeatmap() {
             .attr('class', 'day-initial')
             .attr('transform', 'translate(8,' + (SQUARE_LENGTH + SQUARE_PADDING) * (index + 1) + ')')
             .style('text-anchor', 'middle')
-            .style('font-size', '13px')
+            .style('font-size', '12px')
+            .style('color', '#666')
+            .style('font-family', '"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif')
             .attr('dy', '2')
             .text(day);
         }

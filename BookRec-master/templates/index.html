@@ -52,38 +52,36 @@
 
 	<!-- <div class="jumbotron jumbotron-fluid"> -->
 	<!-- Page Content -->
-	<div style="padding: 16px;">
-		<div class="panel panel-default" id="overview" >
-			<div class="panel-heading"><i class="fa fa-bar-chart" aria-hidden="true"></i> Data Overview <i
-					class="fa fa-chevron-up float-right"></i></div>
-			<div class="panel-body">
-				<div class="col-md-3">
-					<div class="small-graph">
-						<div id="ratingperuser"></div>
+	
+
+	<div class="container">
+
+			<div class="panel panel-default" id="overview" >
+				<div class="panel-heading"><i class="fa fa-bar-chart" aria-hidden="true"></i> Dataset Overview <i
+						class="fa fa-chevron-up float-right"></i></div>
+				<div class="panel-body">
+					<!-- <div class="col-md-3">
+						<div class="small-graph">
+							<div id="ratingperuser"></div>
+						</div>
+					</div> -->
+					<div class="col-md-4">
+						<div class="small-graph">
+							<div id="meanratingperuser"></div>
+						</div>
 					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="small-graph">
-						<div id="meanratingperuser"></div>
+					<div class="col-md-4">
+						<div class="small-graph">
+							<div id="ratingsperbook"></div>
+						</div>
 					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="small-graph">
-						<div id="ratingsperbook"></div>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="small-graph">
-						<div id="meanratingsperbook"></div>
+					<div class="col-md-4">
+						<div class="small-graph">
+							<div id="meanratingsperbook"></div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<div class="container">
-		
-
 
 
 		<!-- <div class="bag1">
@@ -130,8 +128,8 @@
 							<li role="presentation"><a href="#simUser" aria-controls="simUser" role="tab" data-toggle="tab">Similar Users</a>
 							</li>
 							<li role="presentation" class="active"><a href="#recBooks" aria-controls="recBooks" role="tab" data-toggle="tab">Recommended Books</a></li>
-							<li role="presentation"><a href="#displayHeatmap" aria-controls="displayHeatmap" role="tab" data-toggle="tab">Heatmap</a></li>
-							<li role="presentation"><a href="#displayRatings" aria-controls="displayRatings" role="tab" data-toggle="tab">Ratings</a></li>
+							<li role="presentation"><a href="#bookDetails" aria-controls="bookDetails" role="tab" data-toggle="tab">Book Details</a></li>
+							<!-- <li role="presentation"><a href="#displayRatings" aria-controls="displayRatings" role="tab" data-toggle="tab">Ratings</a></li> -->
 						</ul>
 						<!-- Tab panes -->
 						<div class="tab-content">
@@ -147,16 +145,31 @@
 								</div>
 							</div>
 
-							<div role="tabpanel" class="tab-pane" id="displayHeatmap">
-								<div id="heatmap"></div>
+							<div role="tabpanel" class="tab-pane" id="bookDetails">
+								<div class="col-md-12" id="initial-text">
+									<h4 style="margin-top: 40px;" class="text-warning"><i class="fa fa-warning"></i> Please select a book from "Recommended Books" tab!</h4>
+								</div>
+								<div class="col-md-12">
+									<h4 class="book-name">Book Name: <span class="book-title"></span></h4>
+								</div>
+								<div id="heatmap" class="col-md-8">
+									<div class="loading">
+										<i class="fa fa-refresh fa-2x fa-spin" aria-hidden="true"></i>
+									</div>
+								</div>
+								<div id="ratingBar" class="col-md-4">
+									<figure class="highcharts-figure">
+										<div id="containerbar"></div>
+									</figure>
+								</div>
 							</div>
 
-							<div role="tabpanel" class="tab-pane" id="displayRatings">
+							<!-- <div role="tabpanel" class="tab-pane" id="displayRatings">
 								<div id="ratingBar"></div>
 								<figure class="highcharts-figure">
 									<div id="containerbar"></div>
 								</figure>
-							</div>
+							</div> -->
 						</div>
 					</div>
 
