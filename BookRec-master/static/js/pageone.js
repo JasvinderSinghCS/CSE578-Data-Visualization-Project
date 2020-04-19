@@ -156,10 +156,15 @@
 		}).done(function (data) {
 			//console.log(data);
 			// Scroll to the Bubble Chart
-			$("html, body").animate({
-				scrollTop: $("#vis").offset().top - 80
-			}, 500);
-			create_bubble(data);
+			// $("html, body").animate({
+			// 	scrollTop: $("#vis").offset().top - 80
+			// }, 500);
+
+			user_similarity_plot(data['user_similarity']);
+
+			var modal_width = $('.tab-pane.active').width();
+			data = JSON.parse(data['reco_clusters']);
+			create_bubble(data, modal_width);
 		});
 	});
 
@@ -357,12 +362,15 @@
 		$('#vis').after('<h3 id = "titletext">Details about: "' + title + '" by <em>' + author + '</em></h3>');
 	}
 
-	function create_bubble(books) {
+	function create_bubble(books, modal_width) {
 		var width = $("#vis").width(),
-			height = 800,
+			height = 600,
 			padding = 1.5, // separation between same-color nodes
-			clusterPadding = 25, // separation between different-color nodes
-			maxRadius = 30;
+			clusterPadding = 20, // separation between different-color nodes
+			maxRadius = 10;
+
+		if(typeof modal_width !== 'undefined')
+			width = modal_width;
 
 		var n = 100, // total number of nodes
 			m = 20; // number of distinct clusters
@@ -387,7 +395,7 @@
 				var n = obj['Title']; // name
 				var div = obj['Author']; // division
 				var asin = obj['asin']
-				var r = 2.9399712579 * n.length;
+				var r = 1.9399712579 * n.length;
 				d = {
 					cluster: div,
 					radius: r,
@@ -486,7 +494,7 @@
 			node.each(cluster(10 * e.alpha * e.alpha))
 				.each(collide(.5))
 				.attr("transform", function (d) {
-					var k = "translate(" + d.x + "," + d.y + ")";
+					var k = "translate(" + (d.x - 50) + "," + (d.y - 50) + ")";
 					return k;
 				})
 		}
@@ -538,5 +546,77 @@
 			};
 		}
 	}
+
+	function user_similarity_plot(data) {
+		Highcharts.chart('similar_user', options());
+
+		function options() {
+			return {
+				chart: {
+					type: 'heatmap',
+					marginTop: 40,
+					marginBottom: 40,
+					zoomType: 'xy',
+					events: {
+						redraw: function() {
+							const data = this.series[0].data
+							const xe = this.xAxis[0].getExtremes()
+							const ye = this.yAxis[0].getExtremes()
+							// Filter data
+							const filteredData = data.filter((point) => {
+								return point.x <= xe.max && point.x >= xe.min && point.y <= ye.max && point.y >= ye.min
+							})
+							//console.log(filteredData)
+							// You can create your table here and fill it with filtered data
+						}
+					}
+				},
+				title: {
+					text: 'Current User Similarity with other Users'
+				},
+				xAxis: {
+					categories: null
+				},
+				yAxis: {
+					categories: null,
+					title: null
+				},
+				colorAxis: {
+					min: 0.08,
+					minColor: '#FFFFFF',
+					maxColor: '#6E63A9',
+					// maxColor: Highcharts.getOptions().colors[0],
+				},
+				legend: {
+					align: 'right',
+					layout: 'vertical',
+					margin: 0,
+					verticalAlign: 'top',
+					y: 25,
+					symbolHeight: 320
+				},
+				tooltip: {
+					formatter: function() {
+						return '<b>Current User Similarity:<br>' + '</b><br><b>' + this.point.value + '</b> similar with user <br><b>' + this.point.options.user + '</b>';
+					}
+				},
+				series: [{
+					name: 'Users similarity with Current User',
+					borderWidth: 0,
+					data: data,
+					dataLabels: {
+						enabled: true,
+						color: 'black',
+						style: {
+							textShadow: 'none',
+							textOutline: 'none'
+						}
+					}
+				}]
+			}
+		}
+		}
+
+		  
 
 })();

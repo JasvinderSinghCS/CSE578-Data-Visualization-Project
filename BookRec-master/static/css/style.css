@@ -265,3 +265,19 @@ input:focus {
   width: 90%;
   margin: auto;
 }
+
+text.highcharts-credits {
+  display: none !important;
+}
+
+#similar_user {
+  margin: 20px 0;
+}
+
+.highcharts-menu li {
+  display: none;
+}
+
+.highcharts-menu li:first-child {
+  display: block;
+}

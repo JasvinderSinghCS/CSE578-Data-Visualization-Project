@@ -263,6 +263,9 @@ def get_rec_circle_packing_chart_rating(input_data, ratings_df):
         output[0].children.append(parent_node(i, node_children))
     return json.dumps(output, default=obj_dict)
 
+
+#def get_users_similarity(input_data, ratings_df):
+
 def get_rec(input_data, ratings_df):
     json_data = json.loads(input_data)
     user_input = pd.DataFrame(json_data)
@@ -276,6 +279,30 @@ def get_rec(input_data, ratings_df):
     user_books.fillna( 0, inplace = True )
     users = user_books.index.values
     user_sim = 1 - pairwise_distances( user_books.values, metric="cosine" )
+
+    filter_curr_user = []
+    filtered_users = []
+    curr_user = user_sim[-1]
+    for i in range(0, len(curr_user) - 1):
+        if curr_user[i] >= 0.08:
+            filter_curr_user.append(curr_user[i])
+            filtered_users.append(users[i])
+
+    x = np.array(np.array_split(filter_curr_user,20))
+    y = np.array(np.array_split(filtered_users,20))
+    result = []
+    temp_sim_rating = []
+    temp_users = []
+    for i in x:
+        temp_sim_rating.append(i.tolist())
+    for i in y:
+        temp_users.append(i.tolist())
+
+    for i in range(0, len(temp_sim_rating) - 1):
+        for j in range(0, len(temp_sim_rating[i]) - 1):
+            temp = {'x':i, 'y':j, 'value':round(temp_sim_rating[i][j], 2), 'user':temp_users[i][j]}
+            result.append(temp)
+
     np.fill_diagonal( user_sim, 0 )
     user_sim_df = pd.DataFrame(user_sim)
     i =np.where(users == "REV001")[0][0]
@@ -295,7 +322,13 @@ def get_rec(input_data, ratings_df):
     dislikes_cluster = np.full(no_of_reco_needed, 2, dtype=int)
     clusters = np.append(likes_cluster, dislikes_cluster)
     reco_clusters = reco.assign(cluster=clusters)
-    return reco_clusters.to_json(orient='records')
+    jsonObj = {
+        'user_similarity': result,
+        'users': filtered_users,
+        'reco_clusters': reco_clusters.to_json(orient='records')
+    }
+
+    return jsonObj
 
 
 if __name__ == '__main__':
