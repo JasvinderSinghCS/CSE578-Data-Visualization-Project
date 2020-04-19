@@ -336,7 +336,9 @@ if __name__ == '__main__':
     books_df = pd.read_csv("./final_books.csv", index_col=False)
     books_df = books_df[['asin', 'Title', 'Author']]
     stats_df = pd.read_csv("./book_stats.csv", index_col=False)
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
 
 # class MyEncoder(JSONEncoder):
 #     def default(self, o):

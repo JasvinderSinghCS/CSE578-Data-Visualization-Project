@@ -26,6 +26,7 @@
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 	<script src="https://code.highcharts.com/modules/export-data.js"></script>
 	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script src="https://code.highcharts.com/modules/histogram-bellcurve.js"></script>
 	<script>
 		function addImage(pk) {
 			alert("addImage: " + pk);
@@ -51,45 +52,39 @@
 
 	<!-- <div class="jumbotron jumbotron-fluid"> -->
 	<!-- Page Content -->
-	<div class="container">
-		<div class="row" id="stats">
-			<div class="col-md-3">
-				<div class="well well-sm">
-					<div class="panel-heading">Stat1</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="well well-sm">
-					<div class="panel-heading">Stat2</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="well well-sm">
-					<div class="panel-heading">Stat3</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="well well-sm">
-					<div class="panel-heading">Stat4</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="panel panel-default" id="overview">
+	<div style="padding: 16px;">
+		<div class="panel panel-default" id="overview" >
 			<div class="panel-heading"><i class="fa fa-bar-chart" aria-hidden="true"></i> Data Overview <i
 					class="fa fa-chevron-up float-right"></i></div>
 			<div class="panel-body">
-				<div class="col-md-4">
-					<div class="small-graph">1</div>
+				<div class="col-md-3">
+					<div class="small-graph">
+						<div id="ratingperuser"></div>
+					</div>
 				</div>
-				<div class="col-md-4">
-					<div class="small-graph">2</div>
+				<div class="col-md-3">
+					<div class="small-graph">
+						<div id="meanratingperuser"></div>
+					</div>
 				</div>
-				<div class="col-md-4">
-					<div class="small-graph">3</div>
+				<div class="col-md-3">
+					<div class="small-graph">
+						<div id="ratingsperbook"></div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="small-graph">
+						<div id="meanratingsperbook"></div>
+					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<div class="container">
+		
+
+
 
 		<!-- <div class="bag1">
 				
@@ -103,10 +98,11 @@
 			</div>	 -->
 		<br>
 		<h3>
-			<span ><i class="fa fa-star-half-o" aria-hidden="true"></i> Rate as many books as you can!</span>
+			<span><i class="fa fa-star-half-o" aria-hidden="true"></i> Rate as many books as you can!</span>
 			<div class="col-md-4 float-right no-padding">
 				<div class="input-group">
-					<input type="text" class="float-right" name="book-search" id="book_search" placeholder="Search Books">
+					<input type="text" class="float-right" name="book-search" id="book_search"
+						placeholder="Search Books">
 					<span class="input-group-addon"><i class="fa fa-search"></i></span>
 				</div>
 			</div>
@@ -181,6 +177,7 @@
 	<script src="http://code.highcharts.com/modules/heatmap.js"></script>
 	<script type="text/javascript" src="static/js/calmap.js"></script>
 	<script type="text/javascript" src="static/js/pageone.js"></script>
+	<script type="text/javascript" src="static/js/displayStats.js"></script>
 </body>
 
 </html>
