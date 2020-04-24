@@ -234,12 +234,15 @@ def get_rec_circle_packing_chart_author(input_data, ratings_df):
     children = []
     output.append(parent_node("author", children))
     node_children = []
+    rating = 4000
     for index, row in reco_author_filter.iterrows():
-        node_children.append(leaf_node(row['Title'], 4000))
+        rating = row['overall_y'] * 4000
+        node_children.append(leaf_node(row['Title'], rating))
     output[0].children.append(parent_node("Similar User", node_children))
     node_children = []
     for index, row in user_rated_books_meta.iterrows():
-        node_children.append(leaf_node(row['Title'], 4000))
+        rating = row['overall'] * 4000
+        node_children.append(leaf_node(row['Title'], rating))
     output[0].children.append(parent_node("Current User", node_children))
     return json.dumps(output, default=obj_dict)
 
@@ -330,13 +333,9 @@ def get_rec(input_data, ratings_df):
     cor_user = user_sim_df.idxmax(axis=1)[i]
     no_of_reco_needed = 10
     reco = get_user_similar_books(i, cor_user, users, books_df)
-    reco_likes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] >= 4)].sort_values(by='overall_y',
-                                                                                              ascending=False).head(
-        no_of_reco_needed)
+    reco_likes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] >= 4)].sort_values(by='overall_y',ascending=False).head(no_of_reco_needed)
     reco_likes = reco_likes[['asin', 'Title', 'Author']]
-    reco_dislikes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] > 0)].sort_values(by='overall_y',
-                                                                                                ascending=True).head(
-        no_of_reco_needed)
+    reco_dislikes = reco[(reco['reviewerID_x'].isnull()) & (reco['overall_y'] > 0)].sort_values(by='overall_y', ascending=True).head(no_of_reco_needed)
     reco_dislikes = reco_dislikes[['asin', 'Title', 'Author']]
     reco = reco_likes.append(reco_dislikes)
     likes_cluster = np.ones(no_of_reco_needed, dtype=int)
