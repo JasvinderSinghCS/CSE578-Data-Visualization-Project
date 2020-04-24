@@ -27,7 +27,7 @@ function plotChartsStats(data, id, title, xAxis, yAxis) {
         }, {
             title: { text: 'Count' },
             max: yAxis.max,
-            tickInterval: id == 'ratingsperbook'? 200: 50,
+            tickInterval: id == 'ratingsperbook'? 230: 50,
             startOnTick: false,
             showLastLabel: true,
             opposite: false

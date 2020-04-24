@@ -21,7 +21,8 @@
 
 	<script src="static/vendor/jquery/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> -->
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 	<script src="https://code.highcharts.com/modules/exporting.js"></script>
 	<script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -134,33 +135,56 @@
 						<!-- Tab panes -->
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane" id="simUser">
-								<div id="similar_user"></div>
+								<div id="similar_user">
+									<div class="col-md-12">
+										<h4 style="margin-top: 40px;" class="text-warning"><i class="fa fa-warning"></i> Please recommend at least one book!</h4>
+									</div>
+								</div>
 							</div>
 
 							<div role="tabpanel" class="tab-pane active" id="recBooks">
-								<div id="vis" height="600"></div>
-								<div class="jumbotron jumbotron-fluid" style="padding: 50px;">
+								<div>
+									<div class="col-md-4">
+										<h4>Recommended Books</h4>
+										<p class="mt-5">You can use filtering based on Ratings or Authors.</p>
+
+										<!-- Rounded switch -->
+										<h5>Ratings</h5>
+										<label class="switch">
+											<input type="checkbox">
+											<span class="slider round"></span>
+										</label>
+										<h5>Authors</h5>
+									</div>
+									<div class="col-md-8" id="vis">
+										<svg id="ratings_based"></svg>
+										<svg id="authors_based" class="hidden"></svg>
+									</div>
+								</div>
+								<!-- <div class="jumbotron jumbotron-fluid" style="padding: 50px;">
 									<h5><i>double click on the circle</i></h5><br>
 									<div id="textDesc"></div>
-								</div>
+								</div> -->
 							</div>
 
 							<div role="tabpanel" class="tab-pane" id="bookDetails">
 								<div class="col-md-12" id="initial-text">
 									<h4 style="margin-top: 40px;" class="text-warning"><i class="fa fa-warning"></i> Please select a book from "Recommended Books" tab!</h4>
 								</div>
-								<div class="col-md-12">
-									<h4 class="book-name">Book Name: <span class="book-title"></span></h4>
-								</div>
-								<div id="heatmap" class="col-md-8">
-									<div class="loading">
-										<i class="fa fa-refresh fa-2x fa-spin" aria-hidden="true"></i>
+								<div class="book-stats hidden">
+									<div class="col-md-12">
+										<h4 class="book-name">Book Name: <span class="book-title"></span></h4>
 									</div>
-								</div>
-								<div id="ratingBar" class="col-md-4">
-									<figure class="highcharts-figure">
-										<div id="containerbar"></div>
-									</figure>
+									<div id="heatmap" class="col-md-8">
+										<div class="loading">
+											<i class="fa fa-refresh fa-2x fa-spin" aria-hidden="true"></i>
+										</div>
+									</div>
+									<div id="ratingBar" class="col-md-4">
+										<figure class="highcharts-figure">
+											<div id="containerbar"></div>
+										</figure>
+									</div>
 								</div>
 							</div>
 
@@ -175,10 +199,10 @@
 
 				</div>
 
-				<div class="modal-footer">
+				<!-- <div class="modal-footer">
 
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
@@ -191,6 +215,7 @@
 	<script type="text/javascript" src="static/js/calmap.js"></script>
 	<script type="text/javascript" src="static/js/pageone.js"></script>
 	<script type="text/javascript" src="static/js/displayStats.js"></script>
+	<script type="text/javascript" src="static/js/packedBubble.js"></script>
 </body>
 
 </html>

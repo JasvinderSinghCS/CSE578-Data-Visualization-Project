@@ -201,6 +201,16 @@ def get_rec_author_filtered(input_data, ratings_df):
     reco_author_filter = reco_clusters.loc[~reco['Author'].isin(user_rated_books_meta['Author'])]
     return reco_author_filter.to_json(orient='records')
 
+@app.route('/api/getPackedAuthor' ,methods=['POST'])
+@cross_origin(support_credentials=True)
+def packed_rec_author():
+    print(request.data)
+    if not request.data:
+        abort(400)
+    res = get_rec_circle_packing_chart_author(request.data, ratings_df)
+    #rec_author_filtered = get_rec_author_filtered(request.data, ratings_df)
+    return res
+
 def get_rec_circle_packing_chart_author(input_data, ratings_df):
     json_data = json.loads(input_data)
     user_input = pd.DataFrame(json_data)
@@ -233,6 +243,17 @@ def get_rec_circle_packing_chart_author(input_data, ratings_df):
     output[0].children.append(parent_node("Current User", node_children))
     return json.dumps(output, default=obj_dict)
 
+@app.route('/api/getPackedRating' ,methods=['POST'])
+@cross_origin(support_credentials=True)
+def packed_rec_rating():
+    print(request.data)
+    if not request.data:
+        abort(400)
+    res = get_rec_circle_packing_chart_rating(request.data, ratings_df)
+    #rec_author_filtered = get_rec_author_filtered(request.data, ratings_df)
+    return res
+
+#@cross_origin(support_credentials=True)
 def get_rec_circle_packing_chart_rating(input_data, ratings_df):
     json_data = json.loads(input_data)
     user_input = pd.DataFrame(json_data)
@@ -298,15 +319,9 @@ def get_rec(input_data, ratings_df):
     for i in y:
         temp_users.append(i.tolist())
 
-    max_sim_val = max(filter_curr_user)
-
     for i in range(0, len(temp_sim_rating) - 1):
         for j in range(0, len(temp_sim_rating[i]) - 1):
-            if temp_sim_rating[i][j] == max_sim_val:
-                maxVal = True
-            else:
-                maxVal = False
-            temp = {'x':i, 'y':j, 'value':round(temp_sim_rating[i][j], 2), 'user':temp_users[i][j], 'max': maxVal}
+            temp = {'x':i, 'y':j, 'value':round(temp_sim_rating[i][j], 2), 'user':temp_users[i][j]}
             result.append(temp)
 
     np.fill_diagonal( user_sim, 0 )

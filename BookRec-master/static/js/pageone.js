@@ -165,9 +165,29 @@
 
 			user_similarity_plot(data['user_similarity']);
 
-			var modal_width = $('.tab-pane.active').width();
-			data = JSON.parse(data['reco_clusters']);
-			create_bubble(data, modal_width);
+			// var modal_width = $('.tab-pane.active').width();
+			// data = JSON.parse(data['reco_clusters']);
+			// create_bubble(data, modal_width);
+		});
+
+		$.ajax({
+			type: "POST",
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(req_array),
+			url: "/api/getPackedRating"
+		}).done(function (data) {
+			packedBubble(data, 'ratings');
+		});
+
+		$.ajax({
+			type: "POST",
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(req_array),
+			url: "/api/getPackedAuthor"
+		}).done(function (data) {
+			packedBubble(data, 'authors');
 		});
 	});
 
@@ -476,10 +496,10 @@
 				//console.log(d.name);
 				
 				// Move to the Book Details Tab
-				$('a[href="#bookDetails"]').trigger('click');
-
+				$('#bookDetails .book-stats').removeClass('hidden');
 				// Remove Initial Text
 				$('#initial-text').remove();
+				$('a[href="#bookDetails"]').trigger('click');
 
 				// Add Book name
 				$('.book-name .book-title').empty().append(d.name);
@@ -562,72 +582,74 @@
 	}
 
 	function user_similarity_plot(data) {
-		Highcharts.chart('similar_user', options());
+		if(data.length) {
+			Highcharts.chart('similar_user', options());
 
-		function options() {
-			return {
-				chart: {
-					type: 'heatmap',
-					marginTop: 45,
-					marginBottom: 40,
-					zoomType: 'xy',
-					events: {
-						redraw: function() {
-							const data = this.series[0].data
-							const xe = this.xAxis[0].getExtremes()
-							const ye = this.yAxis[0].getExtremes()
-							// Filter data
-							const filteredData = data.filter((point) => {
-								return point.x <= xe.max && point.x >= xe.min && point.y <= ye.max && point.y >= ye.min
-							})
-							//console.log(filteredData)
-							// You can create your table here and fill it with filtered data
+			function options() {
+				return {
+					chart: {
+						type: 'heatmap',
+						marginTop: 45,
+						marginBottom: 40,
+						zoomType: 'xy',
+						events: {
+							redraw: function() {
+								const data = this.series[0].data
+								const xe = this.xAxis[0].getExtremes()
+								const ye = this.yAxis[0].getExtremes()
+								// Filter data
+								const filteredData = data.filter((point) => {
+									return point.x <= xe.max && point.x >= xe.min && point.y <= ye.max && point.y >= ye.min
+								})
+								//console.log(filteredData)
+								// You can create your table here and fill it with filtered data
+							}
 						}
-					}
-				},
-				title: {
-					text: 'Current User Similarity with other Users'
-				},
-				xAxis: {
-					categories: null
-				},
-				yAxis: {
-					categories: null,
-					title: null,
-					gridLineWidth: 0
-				},
-				colorAxis: {
-					min: 0.09,
-					minColor: '#dbf1af',
-					maxColor: '#196127',
-					// maxColor: Highcharts.getOptions().colors[0],
-				},
-				legend: {
-					align: 'right',
-					layout: 'vertical',
-					margin: 0,
-					verticalAlign: 'top',
-					y: 25,
-					symbolHeight: 320
-				},
-				tooltip: {
-					formatter: function() {
-						return '<b>Current User Similarity:<br>' + '</b><br><b>' + this.point.value + '</b> similar with user <br><b>' + this.point.options.user + '</b>';
-					}
-				},
-				series: [{
-					name: 'Users similarity with Current User',
-					borderWidth: 0,
-					data: data,
-					dataLabels: {
-						enabled: true,
-						color: 'black',
-						style: {
-							textShadow: 'none',
-							textOutline: 'none'
+					},
+					title: {
+						text: 'Current User Similarity with other Users'
+					},
+					xAxis: {
+						categories: null
+					},
+					yAxis: {
+						categories: null,
+						title: null,
+						gridLineWidth: 0
+					},
+					colorAxis: {
+						min: 0.09,
+						minColor: '#dbf1af',
+						maxColor: '#196127',
+						// maxColor: Highcharts.getOptions().colors[0],
+					},
+					legend: {
+						align: 'right',
+						layout: 'vertical',
+						margin: 0,
+						verticalAlign: 'top',
+						y: 25,
+						symbolHeight: 320
+					},
+					tooltip: {
+						formatter: function() {
+							return '<b>Current User Similarity:<br>' + '</b><br><b>' + this.point.value + '</b> similar with user <br><b>' + this.point.options.user + '</b>';
 						}
-					}
-				}]
+					},
+					series: [{
+						name: 'Users similarity with Current User',
+						borderWidth: 0,
+						data: data,
+						dataLabels: {
+							enabled: true,
+							color: 'black',
+							style: {
+								textShadow: 'none',
+								textOutline: 'none'
+							}
+						}
+					}]
+				}
 			}
 		}
 	}
