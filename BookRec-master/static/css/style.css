@@ -330,9 +330,21 @@ text.highcharts-credits {
 }
 
 .label {
-  font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
   text-anchor: middle;
   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+}
+
+.label-child {
+  font: 12px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  text-anchor: middle;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+}
+
+.label-big {
+  font-size: 54px !important;
 }
 
 .label,
@@ -414,4 +426,18 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  width: 100px;					
+  height: auto;					
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: lightsteelblue;
+  font-weight: bold;
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;			
 }

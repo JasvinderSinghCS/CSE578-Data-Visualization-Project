@@ -49,7 +49,12 @@ function packedBubble(data, type) {
         .attr("class", "label")
         .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
         .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
-        .text(function(d) { return d.data.name; });
+        .text(function(d) {  
+            if (d.data.name === 'Similar User' || d.data.name === 'Current User') {
+                return d.data.name;
+            }
+            return d.data.name.length > 10 ? d.data.name.substr(0, 7) + '..' : d.data.name; 
+        });
 
     var node = g.selectAll("circle,text");
 
@@ -58,9 +63,11 @@ function packedBubble(data, type) {
         .on("click", function() { zoom(root); });
 
     zoomTo([root.x, root.y, root.r * 2 + margin]);
+    g.selectAll("text").filter(e => e !== undefined && (Number.isInteger(e.data.name))).attr("class", "label label-big");
 
     function zoom(d) {
         var focus0 = focus; focus = d;
+        const div = d3.select("#tooltip");
 
         var transition = d3.transition()
             .duration(d3.event.altKey ? 7500 : 750)
@@ -72,8 +79,27 @@ function packedBubble(data, type) {
         transition.selectAll("text")
         .filter(function(d) { return (typeof d !== "undefined")? d.parent === focus || this.style.display === "inline":''; })
             .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+            .attr("class", "label-child")
             .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
             .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+        
+        d3.selectAll("text").on("mouseover", (d) => {
+            console.log(d)
+            div.transition()		
+                .duration(200)		
+                .style("opacity", 1.0);		
+            div	.html(d.data.name)	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+        }).on("mouseout", function(d) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        });
+
+        setTimeout(() => {
+            d3.selectAll('text').filter(e => e !== undefined && (Number.isInteger(e.data.name))).attr("class", "label label-big");
+        })
     }
 
     function zoomTo(v) {
@@ -85,4 +111,5 @@ function packedBubble(data, type) {
 
 $('.switch input').change(function(){
     $('#ratings_based, #authors_based').toggleClass('hidden');
+    // need to replot the graph here
 });
