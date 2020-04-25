@@ -94,13 +94,13 @@ function calendarHeatmap() {
 
     d3.select(chart.selector()).selectAll('svg.calendar-heatmap').remove(); // remove the existing chart, if it exists
 
-    var dateRange = d3.time.days(yearAgo, now); // generates an array of date objects within the specified range
-    var monthRange = d3.time.months(moment(yearAgo).startOf('month').toDate(), now); // it ignores the first month if the 1st date is after the start of the month
+    var dateRange = d3.timeDays(yearAgo, now); // generates an array of date objects within the specified range
+    var monthRange = d3.timeMonths(moment(yearAgo).startOf('month').toDate(), now); // it ignores the first month if the 1st date is after the start of the month
     var firstDate = moment(dateRange[0]);
     if (max === null) { max = d3.max(chart.data(), function (d) { return d.count; }); } // max data value
 
     // color range
-    var color = d3.scale.linear()
+    var color = d3.scaleLinear()
       // .range(['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'])
       .range(['#dbf1af', '#196127'])
       .domain([0, max]);

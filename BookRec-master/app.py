@@ -26,9 +26,14 @@ class parent_node:
 
 
 class leaf_node:
-    def __init__(self, name, value):
+    def __init__(self, name, value, asin, author):
         self.name = name
         self.value = value
+        self.asin = asin
+        if pd.isnull(author):
+            self.author = ''
+        else:
+            self.author = author 
 
 
 @app.route('/api/getbooks')
@@ -237,12 +242,12 @@ def get_rec_circle_packing_chart_author(input_data, ratings_df):
     rating = 4000
     for index, row in reco_author_filter.iterrows():
         rating = row['overall_y'] * 4000
-        node_children.append(leaf_node(row['Title'], rating))
+        node_children.append(leaf_node(row['Title'], rating, row['asin'], row['Author']))
     output[0].children.append(parent_node("Similar User", node_children))
     node_children = []
     for index, row in user_rated_books_meta.iterrows():
         rating = row['overall'] * 4000
-        node_children.append(leaf_node(row['Title'], rating))
+        node_children.append(leaf_node(row['Title'], rating, row['asin'], row['Author']))
     output[0].children.append(parent_node("Current User", node_children))
     return json.dumps(output, default=obj_dict)
 
@@ -282,7 +287,7 @@ def get_rec_circle_packing_chart_rating(input_data, ratings_df):
     for i, g in reco.groupby(['overall_y']):
         node_children = []
         for index, row in g.iterrows():
-            node_children.append(leaf_node(row['Title'], 4000))
+            node_children.append(leaf_node(row['Title'], 4000, row['asin'], row['Author']))
             # print(row['c1'], row['c2'])
         output[0].children.append(parent_node(i, node_children))
     return json.dumps(output, default=obj_dict)
