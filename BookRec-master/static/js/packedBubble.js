@@ -49,8 +49,10 @@ function packedBubble(data, type) {
         .style("fill", function (d) { return d.children ? color(d.depth) : null; })
         .on("click", function (d) {
             console.log(d3.select(this).attr("class"))
-            if ( d3.select(this).attr("class") === 'node node--leaf')
-                //return;
+            if ( d3.select(this).attr("class") === 'node node--leaf') {
+                d3.event.stopPropagation();
+                return;
+            }
             if (focus !== d) zoom(d)
             d3.event.stopPropagation();
         })
@@ -70,7 +72,7 @@ function packedBubble(data, type) {
         // Add Book name
         $('.book-name .book-title').empty().append(d.name);
 
-        add_title(data.name, data.authorname);
+        //add_title(data.name, data.authorname);
         get_heatmap(data.asin, data.name);
         get_ratings(data.asin, data.name);
     })
