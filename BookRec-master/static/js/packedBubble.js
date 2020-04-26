@@ -70,7 +70,7 @@ function packedBubble(data, type) {
         $('a[href="#bookDetails"]').trigger('click');
 
         // Add Book name
-        $('.book-name .book-title').empty().append(d.name);
+        $('.book-name .book-title').empty().append(data.name);
 
         //add_title(data.name, data.authorname);
         get_heatmap(data.asin, data.name);
