@@ -7,6 +7,15 @@ function plotChartsStats(data, id, title, xAxis, yAxis) {
             text: title
         },
 
+        tooltip: {
+            formatter: function() {
+                //console.log(this);
+                return `
+                <span> ${this.point.options.x.toFixed(2)} -  ${this.point.options.x2.toFixed(2)}</span> <br />
+                <span style="color: ${this.color}">●</span> <span>${this.series.name}</span> : <b>${this.point.y}</b>
+                `
+            }
+        },
         xAxis: [{
             title: false,
             alignTicks: false,
@@ -54,7 +63,7 @@ function plotChartsStats(data, id, title, xAxis, yAxis) {
             enabled: false,
         },
         series: [{
-            name: 'Histogram',
+            name: title,
             type: 'histogram',
             xAxis: 1,
             yAxis: 1,
@@ -71,7 +80,7 @@ function plotChartsStats(data, id, title, xAxis, yAxis) {
 }
 
 function init() {
-    $.ajax({
+    /*$.ajax({
         type: "GET",
         dataType: "json",
         url: "/api/stat/ratingperuser",
@@ -89,7 +98,7 @@ function init() {
             });
             // console.log(JSON.stringify(arr));
         }
-    });
+    });*/
 
     $.ajax({
         type: "GET",
