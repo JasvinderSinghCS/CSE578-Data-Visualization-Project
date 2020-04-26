@@ -213,11 +213,12 @@ function calendarHeatmap() {
         .attr('x', function (d, i) {
           var matchIndex = 0;
           dateRange.find(function (element, index) {
-            matchIndex = index;
+            matchIndex = index + 1;
             return moment(d).isSame(element, 'month') && moment(d).isSame(element, 'year');
           });
 
-          return 20 + Math.floor(matchIndex / 7) * (SQUARE_LENGTH + SQUARE_PADDING);
+          console.log(matchIndex,  Math.ceil(matchIndex / 7));
+          return 20 + ( Math.ceil(matchIndex / 7) )* (SQUARE_LENGTH + SQUARE_PADDING) + (i === 1 ? 30.5 : 0);
         })
         .attr('y', 20);  // fix these to the top
 
