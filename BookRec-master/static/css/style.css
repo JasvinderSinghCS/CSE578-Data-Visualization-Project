@@ -276,13 +276,13 @@ text.highcharts-credits {
   margin: 20px 0;
 }
 
-.highcharts-menu li {
+/* .highcharts-menu li {
   display: none;
 }
 
 .highcharts-menu li:first-child {
   display: block;
-}
+} */
 
 .modal h4 {
   font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
@@ -321,7 +321,7 @@ text.highcharts-credits {
 }
 
 .node:hover {
-  stroke: #000;
+  stroke: #555;
   stroke-width: 1.5px;
 }
 
@@ -344,7 +344,8 @@ text.highcharts-credits {
 }
 
 .label-big {
-  font-size: 54px !important;
+  font-size: 40px !important;
+  transform-origin: center;
 }
 
 .label,
@@ -361,6 +362,12 @@ text.highcharts-credits {
   display: inline-block;
   font-size: 16px;
   padding: 0 10px;
+}
+
+#recBooks h4 span {
+  font-style: italic;
+  font-weight: bold;
+  color: #196127;
 }
 
 /* The switch - the box around the slider */
@@ -387,7 +394,7 @@ text.highcharts-credits {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #2196F3;
+  background-color: #196127;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -405,11 +412,11 @@ text.highcharts-credits {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #196127;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #196127;
 }
 
 input:checked + .slider:before {
@@ -430,13 +437,21 @@ input:checked + .slider:before {
 div.tooltip {	
   position: absolute;			
   text-align: center;			
-  width: 100px;					
+  width: 120px;					
   height: auto;					
-  padding: 2px;				
+  padding: 5px;				
   font: 12px sans-serif;		
-  background: lightsteelblue;
+  background: #525252;
   font-weight: bold;
   border: 0px;		
   border-radius: 8px;			
-  pointer-events: none;			
+  pointer-events: none;
+  color: #fff;
+  box-shadow: 1px 1px 3px #aaa;
+}
+
+.selected-book-details span {
+  font-weight: bold;
+  color: #196127;
+  font-size: 110%;
 }

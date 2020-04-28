@@ -1,7 +1,7 @@
 function plotChartsStats(data, id, title, xAxis, yAxis) {
     Highcharts.chart(id, {
         chart: {
-            height: (7 / 8 * 100) + '%'
+            height: (7.5 / 8 * 100) + '%'
         },
         title: {
             text: title
@@ -34,7 +34,7 @@ function plotChartsStats(data, id, title, xAxis, yAxis) {
             tickInterval: 100
 
         }, {
-            title: { text: 'Count' },
+            title: { text: '' },
             max: yAxis.max,
             tickInterval: id == 'ratingsperbook'? 230: 50,
             startOnTick: false,

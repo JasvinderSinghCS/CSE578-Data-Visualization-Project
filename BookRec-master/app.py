@@ -138,6 +138,13 @@ def get_meanratingperbook():
     meanratingperbook = book_group['overall'].agg(np.mean)
     return meanratingperbook.to_json()
 
+def get_avg_rating(isbn):
+    book_group = stats_df.groupby('asin')
+    meanratingperbook = book_group['overall'].agg(np.mean)
+    for i,v in meanratingperbook.items():
+        if i == isbn:
+            return round(v, 2)
+
 def get_user_similar_books( user1, user2 ,users ,books_df):
   common_books = ratings_df[ratings_df.reviewerID == users[user1]].merge(
       ratings_df[ratings_df.reviewerID == users[user2]],
@@ -231,8 +238,9 @@ def get_rec_circle_packing_chart_author(input_data, ratings_df):
     user_sim_df = pd.DataFrame(user_sim)
     i =np.where(users == "REV001")[0][0]
     cor_user = user_sim_df.idxmax(axis=1)[i]
-    no_of_reco_needed = 10
+    no_of_reco_needed = 25
     reco = get_user_similar_books(i, cor_user, users, books_df)
+    reco = reco[(reco['reviewerID_x'].isnull())].sort_values(by='overall_y',ascending=False).head(no_of_reco_needed)
 
     reco_author_filter = reco.loc[~reco['Author'].isin(user_rated_books_meta['Author'])]
     output = []
@@ -241,12 +249,14 @@ def get_rec_circle_packing_chart_author(input_data, ratings_df):
     node_children = []
     rating = 4000
     for index, row in reco_author_filter.iterrows():
-        rating = row['overall_y'] * 4000
+        rating = get_avg_rating(row['asin'])
+        # rating = row['overall_y'] * get_avg_rating(row['asin'])
         node_children.append(leaf_node(row['Title'], rating, row['asin'], row['Author']))
-    output[0].children.append(parent_node("Similar User", node_children))
+    output[0].children.append(parent_node("Different Authors", node_children))
     node_children = []
     for index, row in user_rated_books_meta.iterrows():
-        rating = row['overall'] * 4000
+        rating = get_avg_rating(row['asin'])
+        # rating = row['overall'] * get_avg_rating(row['asin'])
         node_children.append(leaf_node(row['Title'], rating, row['asin'], row['Author']))
     output[0].children.append(parent_node("Current User", node_children))
     return json.dumps(output, default=obj_dict)
@@ -278,8 +288,10 @@ def get_rec_circle_packing_chart_rating(input_data, ratings_df):
     user_sim_df = pd.DataFrame(user_sim)
     i =np.where(users == "REV001")[0][0]
     cor_user = user_sim_df.idxmax(axis=1)[i]
-    no_of_reco_needed = 10
+    no_of_reco_needed = 25
     reco = get_user_similar_books(i, cor_user, users, books_df)
+
+    reco = reco[(reco['reviewerID_x'].isnull())].sort_values(by='overall_y',ascending=False).head(no_of_reco_needed)
 
     output = []
     children = []
@@ -287,7 +299,7 @@ def get_rec_circle_packing_chart_rating(input_data, ratings_df):
     for i, g in reco.groupby(['overall_y']):
         node_children = []
         for index, row in g.iterrows():
-            node_children.append(leaf_node(row['Title'], 4000, row['asin'], row['Author']))
+            node_children.append(leaf_node(row['Title'], get_avg_rating(row['asin']), row['asin'], row['Author']))
             # print(row['c1'], row['c2'])
         output[0].children.append(parent_node(i, node_children))
     return json.dumps(output, default=obj_dict)

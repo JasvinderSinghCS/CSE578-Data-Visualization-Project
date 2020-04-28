@@ -24,8 +24,8 @@
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script> -->
 	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<!-- <script src="https://code.highcharts.com/modules/exporting.js"></script> -->
+	<!-- <script src="https://code.highcharts.com/modules/export-data.js"></script> -->
 	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 	<script src="https://code.highcharts.com/modules/histogram-bellcurve.js"></script>
 	<script>
@@ -47,7 +47,7 @@
 	<header>
 		<div class="container">
 			<h1>Book Recommendation System</h1>
-			<h4>What you should read next?</h4>
+			<!-- <h4>What you should read next?</h4> -->
 		</div>
 	</header>
 
@@ -117,7 +117,7 @@
 		<div class="modal-dialog modal-xl" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle"><b>Here are our recommendations for you!</b></h5>
+					<h4 class="modal-title" id="exampleModalLongTitle"><b>Here are our recommendations for you!</b></h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -144,8 +144,8 @@
 
 							<div role="tabpanel" class="tab-pane active" id="recBooks">
 								<div>
-									<div class="col-md-4 mt-4">
-										<h4>Recommended Books</h4>
+									<div class="col-md-5 mt-4 pl-4">
+										<h4>Recommended Books: <span>based on Ratings</span></h4>
 										<p class="mt-5">You can use filtering based on Ratings or Authors.</p>
 
 										<!-- Rounded switch -->
@@ -156,12 +156,19 @@
 										</label>
 										<h5>Authors</h5>
 										<hr>
+										<div class="selected-book-details">
+											<h5 style="padding: 0;">Selected Book Details:</h5>
+											<p class="book-title">Title: <span></span></p>
+											<p class="book-author">Author: <span></span></p>
+											<p class="book-rating">Avg. Rating: <i class="fa fa-star text-warning"></i> <span></span></p>
+										</div>
+										<hr>
 										<div class="pt-4">
-											<p class="text-info"><i class="fa fa-info-circle"></i> Click on a bubble to zoom-in.</p>
+											<p class="text-info"><i class="fa fa-info-circle"></i> Click on a bubble to zoom-in. Click on Book bubble to see the details.</p>
 											<p class="text-info"><i class="fa fa-info-circle"></i> Double Click on a bubble to view it's details</p>
 										</div>
 									</div>
-									<div class="col-md-8" id="vis">
+									<div class="col-md-7" id="vis">
 										<svg id="ratings_based"></svg>
 										<svg id="authors_based" class="hidden"></svg>
 									</div>

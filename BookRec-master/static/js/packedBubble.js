@@ -3,6 +3,35 @@ function add_title(title, author) {
     $('#vis').after('<h3 id = "titletext">Details about: "' + title + '" by <em>' + author + '</em></h3>');
 }
 
+var apiData;
+
+function initPackedBubble(req_array, type) {
+    if(typeof type !== 'undefined' && type == 'ratings') {
+        apiData = req_array;
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            dataType: "json",
+            data: JSON.stringify(req_array),
+            url: "/api/getPackedRating"
+        }).done(function (data) {
+            packedBubble(data, 'ratings');
+        });    
+    }
+
+    if(typeof type !== 'undefined' && type == 'authors') {
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json',
+            dataType: "json",
+            data: JSON.stringify(req_array),
+            url: "/api/getPackedAuthor"
+        }).done(function (data) {
+            packedBubble(data, 'authors');
+        });
+    }
+}
+
 function packedBubble(data, type) {
     const modal_ht = $(".modal-header").outerHeight() + $(".nav-tabs").outerHeight();
     const height = $(window).height() - modal_ht - 120;
@@ -24,8 +53,9 @@ function packedBubble(data, type) {
         g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
     var color = d3.scaleLinear()
-        .domain([-1, 5])
-        .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+        .domain([-1, 4])
+        .range(["hsl(80, 96%, 82%)", "hsl(132, 59%, 24%)"])
+        // .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
         .interpolate(d3.interpolateHcl);
 
     var pack = d3.pack()
@@ -34,10 +64,15 @@ function packedBubble(data, type) {
 
 
     var root = d3.hierarchy(data[0])
-        .sum(function (d) { return d.value; })
+        .sum(function (d) { 
+            if(typeof d.value !== 'undefined') {
+                return parseInt(d.value * 1000, 10);
+            } else {
+                return 4000;
+            }
+        })
         .sort(function (a, b) { return b.value - a.value; });
 
-    console.log(root)
     var focus = root,
         nodes = pack(root).descendants(),
         view;
@@ -46,11 +81,22 @@ function packedBubble(data, type) {
         .data(nodes)
         .enter().append("circle")
         .attr("class", function (d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
+        .attr("data-asin", function(d) { return d.data.asin })
+        .attr("data-name", function(d) { return d.data.name })
+        .attr("data-author", function(d) { return d.data.author })
+        .attr("data-rating", function(d) { return d.data.value })
         .style("fill", function (d) { return d.children ? color(d.depth) : null; })
         .on("click", function (d) {
-            console.log(d3.select(this).attr("class"))
+            //console.log(d3.select(this).attr("class"))
             if ( d3.select(this).attr("class") === 'node node--leaf') {
                 d3.event.stopPropagation();
+
+                // Add Book Details
+                d3.select(this).style("border", "1px solid #555");
+                $('#recBooks .book-title span').text(d3.select(this).attr("data-name"));
+                $('#recBooks .book-author span').text(d3.select(this).attr("data-author"));
+                $('#recBooks .book-rating span').text(d3.select(this).attr("data-rating"));
+
                 return;
             }
             if (focus !== d) zoom(d)
@@ -62,7 +108,7 @@ function packedBubble(data, type) {
         ;
 
     d3.selectAll(".node--leaf").on("dblclick", function (d) {
-        console.log(d);
+        //console.log(d);
         const { data } = d;
         $('#bookDetails .book-stats').removeClass('hidden');
         // Remove Initial Text
@@ -84,7 +130,7 @@ function packedBubble(data, type) {
         .style("fill-opacity", function (d) { return d.parent === root ? 1 : 0; })
         .style("display", function (d) { return d.parent === root ? "inline" : "none"; })
         .text(function (d) {
-            if (d.data.name === 'Similar User' || d.data.name === 'Current User') {
+            if (d.data.name === 'Different Authors' || d.data.name === 'Current User') {
                 return d.data.name;
             }
             return d.data.name.length > 10 ? d.data.name.substr(0, 7) + '..' : d.data.name;
@@ -120,22 +166,20 @@ function packedBubble(data, type) {
         d3.selectAll("text").on("mouseover", (d) => {
             //console.log(d)
             div.transition()
-                .duration(200)
+                .duration(300)
                 .style("opacity", 1.0);
             div.html(d.data.name)
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
         }).on("mouseout", function (d) {
             div.transition()
-                .duration(500)
+                .duration(300)
                 .style("opacity", 0);
         });
 
         setTimeout(() => {
             d3.selectAll('text').filter(e => e !== undefined && e.data && (Number.isInteger(e.data.name))).attr("class", "label label-big");
-
-
-        }, 1000)
+        }, 500)
     }
 
     function zoomTo(v) {
@@ -147,5 +191,12 @@ function packedBubble(data, type) {
 
 $('.switch input').change(function () {
     $('#ratings_based, #authors_based').toggleClass('hidden');
-    // need to replot the graph here
+    if($(this).is(':checked')) {
+        $('#recBooks h4 span').empty().text('based on Authors');
+        initPackedBubble(apiData, 'authors');
+    }
+    else {
+        $('#recBooks h4 span').empty().text('based on Ratings');
+        initPackedBubble(apiData, 'ratings');
+    }
 });

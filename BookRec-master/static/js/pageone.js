@@ -169,25 +169,10 @@ $('#btnRec').click(function () {
 		// create_bubble(data, modal_width);
 	});
 
-	$.ajax({
-		type: "POST",
-		contentType: 'application/json',
-		dataType: "json",
-		data: JSON.stringify(req_array),
-		url: "/api/getPackedRating"
-	}).done(function (data) {
-		packedBubble(data, 'ratings');
-	});
+	initPackedBubble(req_array, 'ratings');
 
-	$.ajax({
-		type: "POST",
-		contentType: 'application/json',
-		dataType: "json",
-		data: JSON.stringify(req_array),
-		url: "/api/getPackedAuthor"
-	}).done(function (data) {
-		packedBubble(data, 'authors');
-	});
+	// Reset selected book details
+	$('.selected-book-details span').empty();
 });
 
 
@@ -588,7 +573,7 @@ function user_similarity_plot(data) {
 			return {
 				chart: {
 					type: 'heatmap',
-					marginTop: 45,
+					marginTop: 60,
 					marginBottom: 40,
 					zoomType: 'xy',
 					events: {
