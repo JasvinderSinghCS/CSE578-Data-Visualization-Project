@@ -139,11 +139,7 @@ def get_meanratingperbook():
     return meanratingperbook.to_json()
 
 def get_avg_rating(isbn):
-    book_group = stats_df.groupby('asin')
-    meanratingperbook = book_group['overall'].agg(np.mean)
-    for i,v in meanratingperbook.items():
-        if i == isbn:
-            return round(v, 2)
+    return round(avgratingperbook[isbn],2)
 
 def get_user_similar_books( user1, user2 ,users ,books_df):
   common_books = ratings_df[ratings_df.reviewerID == users[user1]].merge(
@@ -373,6 +369,9 @@ if __name__ == '__main__':
     books_df = pd.read_csv("./final_books.csv", index_col=False)
     books_df = books_df[['asin', 'Title', 'Author']]
     stats_df = pd.read_csv("./book_stats.csv", index_col=False)
+    book_group = stats_df.groupby('asin')
+    avgratingperbook = book_group['overall'].agg(np.mean)
+    # print(meanratingperbook['000100039X'])
     import os
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
