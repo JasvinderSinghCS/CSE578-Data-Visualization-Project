@@ -234,7 +234,7 @@ def get_rec_circle_packing_chart_author(input_data, ratings_df):
     user_sim_df = pd.DataFrame(user_sim)
     i =np.where(users == "REV001")[0][0]
     cor_user = user_sim_df.idxmax(axis=1)[i]
-    no_of_reco_needed = 25
+    no_of_reco_needed = 30
     reco = get_user_similar_books(i, cor_user, users, books_df)
     reco = reco[(reco['reviewerID_x'].isnull())].sort_values(by='overall_y',ascending=False).head(no_of_reco_needed)
 
@@ -287,7 +287,7 @@ def get_rec_circle_packing_chart_rating(input_data, ratings_df):
     no_of_reco_needed = 25
     reco = get_user_similar_books(i, cor_user, users, books_df)
 
-    reco = reco[(reco['reviewerID_x'].isnull())].sort_values(by='overall_y',ascending=False).head(no_of_reco_needed)
+    #reco = reco[(reco['reviewerID_x'].isnull())].sort_values(by='overall_y',ascending=False).head(no_of_reco_needed)
 
     output = []
     children = []

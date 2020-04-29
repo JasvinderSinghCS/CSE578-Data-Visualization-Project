@@ -34,7 +34,7 @@ function plotChartsStats(data, id, title, xAxis, yAxis) {
             tickInterval: 100
 
         }, {
-            title: { text: '' },
+            title: { text: 'Count' },
             max: yAxis.max,
             tickInterval: id == 'ratingsperbook'? 230: 50,
             startOnTick: false,
@@ -112,7 +112,7 @@ function init() {
                 {
                     max: 5,
                     tickInterval: 1,
-                    title: 'Mean rating per user'
+                    title: 'Rating Values'
                 }, {
                 max: 150
             });
@@ -132,7 +132,7 @@ function init() {
                 {
                     tickInterval: 500,
                     max: 2000,
-                    title: 'Number of ratings per book'
+                    title: 'Book Ratings'
                 }, {
                 max: 1600
             });
@@ -152,7 +152,7 @@ function init() {
                 {
                     tickInterval: 1,
                     max: 5,
-                    title: 'Mean rating per book'
+                    title: 'Mean Book Ratings'
                 }, {
                 max: 250
             });

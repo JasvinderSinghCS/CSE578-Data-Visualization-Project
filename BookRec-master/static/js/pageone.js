@@ -170,6 +170,7 @@ $('#btnRec').click(function () {
 	});
 
 	initPackedBubble(req_array, 'ratings');
+	initPackedBubble(req_array, 'authors');
 
 	// Reset selected book details
 	$('.selected-book-details span').empty();
@@ -591,14 +592,17 @@ function user_similarity_plot(data) {
 					}
 				},
 				title: {
-					text: 'Current User Similarity with other Users'
+					text: 'Your Similarity with other Users based on Book Ratings'
 				},
 				xAxis: {
-					categories: null
+					categories: null,
+					gridLineWidth: 0,
+					visible: false,
 				},
 				yAxis: {
 					categories: null,
 					title: null,
+					visible: false,
 					gridLineWidth: 0
 				},
 				colorAxis: {
@@ -617,7 +621,7 @@ function user_similarity_plot(data) {
 				},
 				tooltip: {
 					formatter: function () {
-						return '<b>Current User Similarity:<br>' + '</b><br><b>' + this.point.value + '</b> similar with user <br><b>' + this.point.options.user + '</b>';
+						return '<b>Your Similarity:<br>' + '</b><br><b>' + this.point.value + '</b> similar with user <br><b>' + this.point.options.user + '</b>';
 					}
 				},
 				series: [{

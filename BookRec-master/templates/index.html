@@ -126,10 +126,10 @@
 					<div role="tabpanel">
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation"><a href="#simUser" aria-controls="simUser" role="tab" data-toggle="tab">Similar Users</a>
+							<li role="presentation"><a href="#simUser" aria-controls="simUser" role="tab" data-toggle="tab"><i class="fa fa-users"></i> Similar Users</a>
 							</li>
-							<li role="presentation" class="active"><a href="#recBooks" aria-controls="recBooks" role="tab" data-toggle="tab">Recommended Books</a></li>
-							<li role="presentation"><a href="#bookDetails" aria-controls="bookDetails" role="tab" data-toggle="tab">Book Details</a></li>
+							<li role="presentation" class="active"><a href="#recBooks" aria-controls="recBooks" role="tab" data-toggle="tab"><i class="fa fa-search"></i> Recommended Books</a></li>
+							<li role="presentation"><a href="#bookDetails" aria-controls="bookDetails" role="tab" data-toggle="tab"><i class="fa fa-book"></i> Book Details</a></li>
 							<!-- <li role="presentation"><a href="#displayRatings" aria-controls="displayRatings" role="tab" data-toggle="tab">Ratings</a></li> -->
 						</ul>
 						<!-- Tab panes -->
@@ -139,6 +139,9 @@
 									<div class="col-md-12">
 										<h4 style="margin-top: 40px;" class="text-warning"><i class="fa fa-warning"></i> Please recommend at least one book!</h4>
 									</div>
+								</div>
+								<div class="pt-2">
+									<p class="text-info"><i class="fa fa-info-circle"></i> It shows your similarity with other users who have rated the same books as yours in a similar fashion. </p>
 								</div>
 							</div>
 
@@ -184,8 +187,11 @@
 									<h4 style="margin-top: 40px;" class="text-warning"><i class="fa fa-warning"></i> Please select a book from "Recommended Books" tab!</h4>
 								</div>
 								<div class="book-stats hidden">
-									<div class="col-md-12">
+									<div class="col-md-12 book-other-details">
 										<h4 class="book-name">Book Name: <span class="book-title"></span></h4>
+										<p class="book-author">Author: <span></span></p>
+										<p class="book-rating">Avg. Rating: <i class="fa fa-star text-warning"></i> <span></span></p>
+										<hr>
 									</div>
 									<div id="heatmap" class="col-md-8">
 										<div class="loading">

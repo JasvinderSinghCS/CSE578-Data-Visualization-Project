@@ -66,7 +66,7 @@ function packedBubble(data, type) {
     var root = d3.hierarchy(data[0])
         .sum(function (d) { 
             if(typeof d.value !== 'undefined') {
-                return parseInt(d.value * 1000, 10);
+                return parseInt(d.value, 10);
             } else {
                 return 4000;
             }
@@ -92,11 +92,7 @@ function packedBubble(data, type) {
                 d3.event.stopPropagation();
 
                 // Add Book Details
-                d3.select(this).style("border", "1px solid #555");
-                $('#recBooks .book-title span').text(d3.select(this).attr("data-name"));
-                $('#recBooks .book-author span').text(d3.select(this).attr("data-author"));
-                $('#recBooks .book-rating span').text(d3.select(this).attr("data-rating"));
-
+                addBookDetails(d3.select(this));
                 return;
             }
             if (focus !== d) zoom(d)
@@ -108,7 +104,6 @@ function packedBubble(data, type) {
         ;
 
     d3.selectAll(".node--leaf").on("dblclick", function (d) {
-        //console.log(d);
         const { data } = d;
         $('#bookDetails .book-stats').removeClass('hidden');
         // Remove Initial Text
@@ -117,6 +112,8 @@ function packedBubble(data, type) {
 
         // Add Book name
         $('.book-name .book-title').empty().append(data.name);
+        $('#bookDetails .book-author span').text(d3.select(this).attr("data-author"));
+        $('#bookDetails .book-rating span').text(d3.select(this).attr("data-rating"));
 
         //add_title(data.name, data.authorname);
         get_heatmap(data.asin, data.name);
@@ -127,8 +124,16 @@ function packedBubble(data, type) {
         .data(nodes)
         .enter().append("text")
         .attr("class", "label")
+        .attr("data-asin", function(d) { return d.data.asin })
+        .attr("data-name", function(d) { return d.data.name })
+        .attr("data-author", function(d) { return d.data.author })
+        .attr("data-rating", function(d) { return d.data.value })
         .style("fill-opacity", function (d) { return d.parent === root ? 1 : 0; })
         .style("display", function (d) { return d.parent === root ? "inline" : "none"; })
+        .on("click", function(d) {
+            addBookDetails(d3.select(this));
+            d3.event.stopPropagation();
+        })
         .text(function (d) {
             if (d.data.name === 'Different Authors' || d.data.name === 'Current User') {
                 return d.data.name;
@@ -187,6 +192,15 @@ function packedBubble(data, type) {
         node.attr("transform", function (d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
         circle.attr("r", function (d) { return d.r * k; });
     }
+}
+
+
+function addBookDetails($this) {
+    // Add Book Details
+    $this.style("border", "1px solid #555");
+    $('#recBooks .book-title span').text($this.attr("data-name"));
+    $('#recBooks .book-author span').text($this.attr("data-author"));
+    $('#recBooks .book-rating span').text($this.attr("data-rating"));
 }
 
 $('.switch input').change(function () {

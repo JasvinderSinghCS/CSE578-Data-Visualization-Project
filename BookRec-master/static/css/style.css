@@ -450,7 +450,7 @@ div.tooltip {
   box-shadow: 1px 1px 3px #aaa;
 }
 
-.selected-book-details span {
+.selected-book-details span, .book-other-details span {
   font-weight: bold;
   color: #196127;
   font-size: 110%;
