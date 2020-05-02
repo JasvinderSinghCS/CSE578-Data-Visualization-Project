@@ -152,7 +152,7 @@ function packedBubble(data, type) {
 
     function zoom(d) {
         var focus0 = focus; focus = d;
-        const div = d3.select("#tooltip");
+        const div = d3.select("#tooltipBubble");
 
         var transition = d3.transition()
             .duration(d3.event.altKey ? 7500 : 750)

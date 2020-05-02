@@ -434,20 +434,33 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-div.tooltip {	
-  position: absolute;			
-  text-align: center;			
-  width: 120px;					
-  height: auto;					
-  padding: 5px;				
-  font: 12px sans-serif;		
-  background: #525252;
-  font-weight: bold;
-  border: 0px;		
-  border-radius: 8px;			
-  pointer-events: none;
-  color: #fff;
-  box-shadow: 1px 1px 3px #aaa;
+div.tooltipBubble {	
+  position: absolute;
+  text-align: center;
+  padding: 5px;
+  background-color: #333431;
+  color: white;
+  z-index: 1070;
+  display: block;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.42857143;
+  line-break: auto;
+  text-align: left;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  white-space: normal;
+  font-size: 12px;
+  border-radius: 4px;
+  filter: alpha(opacity=0);
+  opacity: 0;
 }
 
 .selected-book-details span, .book-other-details span {

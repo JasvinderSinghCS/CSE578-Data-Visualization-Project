@@ -218,7 +218,7 @@ function calendarHeatmap() {
           });
 
           console.log(matchIndex,  Math.ceil(matchIndex / 7));
-          return 20 + ( Math.ceil(matchIndex / 7) )* (SQUARE_LENGTH + SQUARE_PADDING) + (i === 1 ? 30.5 : 0);
+          return 20 + ( Math.ceil(matchIndex / 7) )* (SQUARE_LENGTH + SQUARE_PADDING);
         })
         .attr('y', 20);  // fix these to the top
 
