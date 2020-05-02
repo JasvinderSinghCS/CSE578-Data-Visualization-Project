@@ -168,7 +168,7 @@ function packedBubble(data, type) {
             .on("start", function (d) { if (d.parent === focus) this.style.display = "inline"; })
             .on("end", function (d) { if (d.parent !== focus) this.style.display = "none"; });
 
-        d3.selectAll("text").on("mouseover", (d) => {
+        g.selectAll("text").on("mouseover", (d) => {
             //console.log(d)
             div.transition()
                 .duration(300)
